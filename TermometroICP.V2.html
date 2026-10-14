@@ -200,7 +200,7 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
 </head>
 <body>
 
-<!-- MODAL -->
+<!-- ══ MODAL ══════════════════════════════════════════════════════════════ -->
 <div id="modal-wrap" style="position:fixed;inset:0;background:rgba(15,23,42,.7);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px">
   <div class="modal-box">
     <div class="modal-logo"><i class="ti ti-thermometer" style="font-size:26px;color:#fff"></i></div>
@@ -215,21 +215,26 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   </div>
 </div>
 
-<!-- APP -->
+<!-- ══ APP ═════════════════════════════════════════════════════════════════ -->
 <div id="app" style="display:none;max-width:1080px;margin:0 auto;padding:24px 16px 80px">
 
+<!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-logo"><div class="hdr-icon"><i class="ti ti-thermometer" style="font-size:22px;color:#fff"></i></div><h1>Termómetro <span>ICP</span></h1></div>
+  <div class="hdr-logo">
+    <div class="hdr-icon"><i class="ti ti-thermometer" style="font-size:22px;color:#fff"></i></div>
+    <h1>Termómetro <span>ICP</span></h1>
+  </div>
   <div class="hdr-sub">Índice de Calor Político · Sistema de Alerta Temprana</div>
   <div class="sess-bar">
     <span>👤</span><span class="an" id="sess-an">—</span>
     <span class="div">|</span><span>Sesión: <span id="sess-ts">—</span></span>
-    <span class="div">|</span><span id="sheets-status" title="Estado Google Sheets">🔗 Sheets</span>
+    <span class="div">|</span><span id="sheets-status" title="Estado Google Sheets" style="cursor:default">🔗 Sheets</span>
     <span class="div">|</span><button onclick="reLogin()">Cambiar analista</button>
   </div>
   <div class="credit">Creado por Célula Yucatán / AO</div>
 </div>
 
+<!-- TABS -->
 <div class="tabs">
   <button class="tab on" onclick="goTab('captura',this)"><i class="ti ti-clipboard-text"></i> Captura</button>
   <button class="tab" onclick="goTab('delta',this)"><i class="ti ti-trending-up"></i> Factor Delta</button>
@@ -240,14 +245,14 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   <button class="tab" onclick="goTab('config',this)"><i class="ti ti-settings"></i> Config</button>
 </div>
 
-<!-- CAPTURA -->
+<!-- ══ CAPTURA ══════════════════════════════════════════════════════════════ -->
 <div id="panel-captura" class="panel on">
   <div class="sl"><div class="ic"><i class="ti ti-id-badge"></i></div>Identificación de la Medición</div>
   <div class="fg">
-    <div class="f"><label>ID / Código del Tema</label><input id="f-id" type="text" placeholder="ej. CRISIS-01"><span class="hint">Mismo ID = mismo tema en el histórico</span></div>
+    <div class="f"><label>ID / Código del Tema</label><input id="f-id" type="text" placeholder="ej. CRISIS-01"><span class="hint">Mismo ID agrupa mediciones del mismo tema en Histórico</span></div>
     <div class="f"><label>Nombre / Tema de la Medición</label><input id="f-tema" type="text" placeholder="ej. Crisis Perritos Mérida" oninput="logPreview()"></div>
     <div class="f"><label>Fecha de la Medición</label><input id="f-fecha" type="date"></div>
-    <div class="f b"><label>Cuenta</label><select id="f-cuenta" onchange="logPreview()"><option value="">— Selecciona una cuenta —</option></select></div>
+    <div class="f b"><label>Cuenta</label><select id="f-cuenta" onchange="onCuentaChange()"><option value="">— Selecciona una cuenta —</option></select></div>
     <div class="f"><label>URL / Ubicación del Reporte</label><input id="f-url" type="text" placeholder="https://..."></div>
     <div class="f b"><label>¿Es actualización de tema existente?</label><select id="f-esact" onchange="toggleCorteNum()"><option value="no">No — medición nueva</option><option value="si">Sí — corte del mismo tema</option></select></div>
     <div class="f" id="corte-num-wrap" style="display:none"><label>Número de corte</label><input id="f-cortenum" type="number" min="2" value="2"></div>
@@ -263,27 +268,20 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       <input id="f-hora" type="hidden">
     </div>
   </div>
-  <div class="sl"><div class="ic"><i class="ti ti-adjustments-horizontal"></i></div>Topes de Normalización <span style="font-size:10px;font-weight:400;color:var(--te600);margin-left:8px;text-transform:none;letter-spacing:0"><i class="ti ti-lock" style="vertical-align:-1px"></i> Solo lectura — se configuran por cuenta en <strong>Configuración</strong></span></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-    <div style="background:var(--sl50);border:1.5px solid var(--sl200);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-      <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sl400);margin-bottom:2px">Reproducciones</div>
-      <div style="font-size:18px;font-weight:800;color:var(--pu600)" id="disp-tr">5,000,000</div></div>
-      <i class="ti ti-eye" style="font-size:18px;color:var(--sl300)"></i>
-    </div>
-    <div style="background:var(--sl50);border:1.5px solid var(--sl200);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-      <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sl400);margin-bottom:2px">Interacciones</div>
-      <div style="font-size:18px;font-weight:800;color:var(--pu600)" id="disp-ti">20,000</div></div>
-      <i class="ti ti-eye" style="font-size:18px;color:var(--sl300)"></i>
-    </div>
-    <div style="background:var(--sl50);border:1.5px solid var(--sl200);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
-      <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sl400);margin-bottom:2px">Menciones</div>
-      <div style="font-size:18px;font-weight:800;color:var(--pu600)" id="disp-tv">50,000</div></div>
-      <i class="ti ti-eye" style="font-size:18px;color:var(--sl300)"></i>
-    </div>
+
+  <div class="sl"><div class="ic"><i class="ti ti-adjustments-horizontal"></i></div>Topes de Normalización
+    <span style="font-size:10px;font-weight:400;color:var(--sl400);margin-left:8px;text-transform:none;letter-spacing:0">Vienen de Config — ajusta aquí solo si esta medición es atípica</span>
   </div>
-  <input id="f-tr" type="hidden" value="5000000">
-  <input id="f-ti" type="hidden" value="20000">
-  <input id="f-tv" type="hidden" value="50000">
+  <div style="background:var(--pu50);border:1px solid var(--pu100);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+    <i class="ti ti-info-circle" style="color:var(--pu600);font-size:16px;flex-shrink:0"></i>
+    <span style="font-size:12px;color:var(--sl600)">Los topes se configuran por cuenta en <strong>Config</strong>. Si el volumen de esta medición es inusualmente alto o bajo, ajústalos aquí sin afectar la configuración global.</span>
+  </div>
+  <div class="fg">
+    <div class="f y"><label>Tope Reproducciones <span style="font-size:10px;color:var(--sl400);font-weight:400">— esta medición</span></label><input id="f-tr" type="number" value="5000000"><span class="hint" id="hint-tr">Config cuenta: 5,000,000</span></div>
+    <div class="f y"><label>Tope Interacciones <span style="font-size:10px;color:var(--sl400);font-weight:400">— esta medición</span></label><input id="f-ti" type="number" value="20000"><span class="hint" id="hint-ti">Config cuenta: 20,000</span></div>
+    <div class="f y"><label>Tope Menciones <span style="font-size:10px;color:var(--sl400);font-weight:400">— esta medición</span></label><input id="f-tv" type="number" value="50000"><span class="hint" id="hint-tv">Config cuenta: 50,000</span></div>
+  </div>
+
   <div class="sl"><div class="ic"><i class="ti ti-flame"></i></div>Eje 1 · Toxicidad — Sentimiento</div>
   <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Porcentaje como número entero: 85% → escribe 85</p>
   <div class="fg">
@@ -292,33 +290,46 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
     <div class="f g"><label>✅ % Positivo</label><input id="f-pos" type="number" min="0" max="100" placeholder="ej. 10" oninput="updSum()"></div>
     <div class="f" style="align-self:flex-end"><div class="pill"><span>Suma:</span><span class="pill-val neu" id="sum-v">—</span></div></div>
   </div>
+
   <div class="sl"><div class="ic"><i class="ti ti-share"></i></div>Eje 2 · Penetración — Reproducciones</div>
   <div class="fg">
     <div class="f r"><label>🔴 Repros Negativo</label><input id="f-rn" type="number" min="0" placeholder="0" oninput="updTot()"></div>
     <div class="f"><label>⚪ Repros Neutral</label><input id="f-rnt" type="number" min="0" placeholder="0" oninput="updTot()"></div>
     <div class="f g"><label>🟢 Repros Positivo</label><input id="f-rp" type="number" min="0" placeholder="0" oninput="updTot()"></div>
-    <div class="f" style="align-self:flex-end"><div class="pill"><span>Total Repros:</span><span class="pill-val" id="tot-r" style="color:var(--gold)">0</span></div></div>
+    <div class="f" style="align-self:flex-end"><div class="pill"><span>Total:</span><span class="pill-val" id="tot-r" style="color:var(--gold)">0</span></div></div>
   </div>
+  <div id="warn-repros" style="display:none;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:9px;padding:10px 14px;margin-bottom:8px;font-size:12px;color:#991B1B;display:none">
+    <i class="ti ti-alert-triangle" style="vertical-align:-2px;margin-right:6px"></i><span id="warn-repros-txt"></span>
+  </div>
+
   <div class="sl"><div class="ic"><i class="ti ti-bolt"></i></div>Eje 3 · Tracción — Interacciones</div>
   <div class="fg">
     <div class="f b"><label>👍 Likes</label><input id="f-lk" type="number" min="0" placeholder="0" oninput="updTot()"></div>
     <div class="f b"><label>🔁 Shares</label><input id="f-sh" type="number" min="0" placeholder="0" oninput="updTot()"></div>
     <div class="f b"><label>💬 Comentarios</label><input id="f-cm" type="number" min="0" placeholder="0" oninput="updTot()"></div>
-    <div class="f" style="align-self:flex-end"><div class="pill"><span>Total Interac:</span><span class="pill-val" id="tot-i" style="color:var(--gold)">0</span></div></div>
+    <div class="f" style="align-self:flex-end"><div class="pill"><span>Total:</span><span class="pill-val" id="tot-i" style="color:var(--gold)">0</span></div></div>
   </div>
+  <div id="warn-interac" style="display:none;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:9px;padding:10px 14px;margin-bottom:8px;font-size:12px;color:#991B1B">
+    <i class="ti ti-alert-triangle" style="vertical-align:-2px;margin-right:6px"></i><span id="warn-interac-txt"></span>
+  </div>
+
   <div class="sl"><div class="ic"><i class="ti ti-speakerphone"></i></div>Eje 2b · Volumen de Menciones</div>
   <div class="fg">
-    <div class="f b"><label>📢 Total de Menciones</label><input id="f-vol" type="number" min="0" placeholder="0"></div>
+    <div class="f b"><label>📢 Total de Menciones</label><input id="f-vol" type="number" min="0" placeholder="0" oninput="chkVol()"></div>
   </div>
+  <div id="warn-vol" style="display:none;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:9px;padding:10px 14px;margin-bottom:8px;font-size:12px;color:#991B1B">
+    <i class="ti ti-alert-triangle" style="vertical-align:-2px;margin-right:6px"></i><span id="warn-vol-txt"></span>
+  </div>
+
   <div class="brow">
     <button class="btn btn-p" onclick="calcICP()"><i class="ti ti-player-play"></i> Calcular ICP</button>
     <button class="btn btn-o" onclick="limpiar()"><i class="ti ti-x"></i> Limpiar formulario</button>
   </div>
 </div>
 
-<!-- DELTA -->
+<!-- ══ DELTA ════════════════════════════════════════════════════════════════ -->
 <div id="panel-delta" class="panel">
-  <p style="font-size:13px;color:var(--sl600);line-height:1.7;margin-bottom:20px">Registra la evolución de un tema. Ingresa el <strong>valor total acumulado</strong> de cada variable en cada corte — el sistema calcula el incremento automáticamente.</p>
+  <p style="font-size:13px;color:var(--sl600);line-height:1.7;margin-bottom:20px">Registra la evolución de un tema corte por corte. Ingresa el <strong>valor total acumulado</strong> de cada variable en cada corte — el sistema calcula el incremento automáticamente.</p>
   <div class="dcard">
     <div class="d-ttl-r">
       <div class="d-ttl"><i class="ti ti-trending-up" style="vertical-align:-2px;margin-right:6px"></i>Factor Delta — Cortes de Actualización</div>
@@ -347,6 +358,7 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       <button class="btn btn-o" onclick="limpiarDelta()"><i class="ti ti-x"></i> Limpiar</button>
     </div>
   </div>
+
   <div id="delta-res" class="hidden">
     <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sl600);margin-bottom:12px">Línea de Tiempo del Tema</div>
     <div id="delta-capture-el">
@@ -357,43 +369,32 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       </div>
       <div style="padding:18px 22px"><div id="d-timeline"></div></div>
       <div style="padding:0 22px 18px"><div id="d-conc" class="conc"></div></div>
-
-      <!-- TOTALES FINALES DEL DELTA -->
       <div id="d-totales" style="padding:0 22px 22px;display:none">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sl400);margin-bottom:12px;padding-top:4px;border-top:1px solid var(--sl200)">Cifras Totales al Cierre del Último Corte</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-          <!-- Sentimiento final -->
-          <div class="db">
-            <div class="db-ttl">Sentimiento Final</div>
+          <div class="db"><div class="db-ttl">Sentimiento Final</div>
             <div class="dr"><span class="dl"><span class="dot" style="background:#DC2626"></span>Negativo</span><span class="dv" id="dt-neg" style="color:#DC2626">—</span></div>
             <div class="dr"><span class="dl"><span class="dot" style="background:#94A3B8"></span>Neutral</span><span class="dv" id="dt-neut" style="color:#64748B">—</span></div>
             <div class="dr"><span class="dl"><span class="dot" style="background:#16A34A"></span>Positivo</span><span class="dv" id="dt-pos" style="color:#16A34A">—</span></div>
           </div>
-          <!-- Reproducciones finales -->
-          <div class="db">
-            <div class="db-ttl">Reproducciones Finales</div>
+          <div class="db"><div class="db-ttl">Reproducciones Finales</div>
             <div class="dr"><span class="dl"><span class="dot" style="background:#DC2626"></span>Negativo</span><span class="dv" id="dt-rep-neg" style="color:#DC2626">—</span></div>
             <div class="dr"><span class="dl"><span class="dot" style="background:#94A3B8"></span>Neutral</span><span class="dv" id="dt-rep-neut" style="color:#64748B">—</span></div>
-            <div class="dr dtot"><span class="dl" style="font-weight:700;color:#0F172A">Total Repros</span><span class="dv" id="dt-rep-tot" style="color:#D97706">—</span></div>
+            <div class="dr dtot"><span class="dl" style="font-weight:700;color:#0F172A">Total</span><span class="dv" id="dt-rep-tot" style="color:#D97706">—</span></div>
           </div>
         </div>
-        <!-- Desglose ICP final -->
-        <div class="db" style="margin-bottom:10px">
-          <div class="db-ttl">Desglose ICP Final — Aporte de cada componente</div>
+        <div class="db" style="margin-bottom:10px"><div class="db-ttl">Desglose ICP Final</div>
           <div class="comp-r"><span class="comp-nm">🔥 Negatividad (45%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-neg" style="background:#DC2626"></div></div><span class="comp-sc" id="dt-cv-neg" style="color:#DC2626">—</span><span class="comp-imp" id="dt-ci-neg">—</span></div>
           <div class="comp-r"><span class="comp-nm">📺 Reproducciones (30%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-rep" style="background:#7C3AED"></div></div><span class="comp-sc" id="dt-cv-rep" style="color:#7C3AED">—</span><span class="comp-imp" id="dt-ci-rep">—</span></div>
           <div class="comp-r"><span class="comp-nm">⚡ Interacciones (15%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-int" style="background:#1D4ED8"></div></div><span class="comp-sc" id="dt-cv-int" style="color:#1D4ED8">—</span><span class="comp-imp" id="dt-ci-int">—</span></div>
-          <div class="comp-r"><span class="comp-nm">📢 Vol. Menciones (10%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-vol" style="background:#15803D"></div></div><span class="comp-sc" id="dt-cv-vol" style="color:#15803D">—</span><span class="comp-imp" id="dt-ci-vol">—</span></div>
+          <div class="comp-r"><span class="comp-nm">📢 Menciones (10%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-vol" style="background:#15803D"></div></div><span class="comp-sc" id="dt-cv-vol" style="color:#15803D">—</span><span class="comp-imp" id="dt-ci-vol">—</span></div>
         </div>
-        <!-- Incrementos vs base -->
-        <div class="db">
-          <div class="db-ttl">Incrementos vs Medición Base</div>
-          <div class="dr"><span class="dl">% Negativo</span><span class="dv" id="dt-inc-neg" style="color:#DC2626">—</span></div>
-          <div class="dr"><span class="dl">Reproducciones</span><span class="dv" id="dt-inc-rep" style="color:#7C3AED">—</span></div>
-          <div class="dr"><span class="dl">ICP total</span><span class="dv" id="dt-inc-icp" style="color:#4F45A8">—</span></div>
+        <div class="db"><div class="db-ttl">Incrementos vs Medición Base</div>
+          <div class="dr"><span class="dl">% Negativo</span><span class="dv" id="dt-inc-neg">—</span></div>
+          <div class="dr"><span class="dl">Reproducciones</span><span class="dv" id="dt-inc-rep">—</span></div>
+          <div class="dr"><span class="dl">ICP total</span><span class="dv" id="dt-inc-icp">—</span></div>
         </div>
       </div>
-
     </div>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px">
@@ -401,11 +402,11 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       <button class="btn-dl" onclick="dlImg('delta-capture-el','delta')" title="Descargar JPG"><i class="ti ti-download"></i></button>
     </div>
   </div>
-<div class="rc" style="padding:20px 22px;margin-top:16px">
+
+  <!-- GUÍA DELTA -->
+  <div class="rc" style="padding:20px 22px;margin-top:16px">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--pu600),var(--te400));display:flex;align-items:center;justify-content:center">
-        <i class="ti ti-trending-up" style="font-size:18px;color:#fff"></i>
-      </div>
+      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--pu600),var(--te400));display:flex;align-items:center;justify-content:center"><i class="ti ti-trending-up" style="font-size:18px;color:#fff"></i></div>
       <div style="font-weight:700;font-size:15px;color:var(--sl800)">¿Cómo funciona el Factor Delta Δ?</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
@@ -415,7 +416,7 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       </div>
       <div style="background:var(--te50);border:1px solid var(--te100);border-radius:10px;padding:14px">
         <div style="font-size:12px;font-weight:700;color:var(--te600);margin-bottom:8px"><i class="ti ti-circle-2" style="vertical-align:-2px;margin-right:6px"></i>Cortes de actualización</div>
-        <div style="font-size:12px;color:var(--sl600);line-height:1.6">Ingresas el <strong>total acumulado</strong> de cada variable en ese corte. Si antes tenías 45% neg y subió a 63%, escribes <strong>63</strong>. El sistema calcula el incremento automáticamente.</div>
+        <div style="font-size:12px;color:var(--sl600);line-height:1.6">Ingresas el <strong>total acumulado</strong>. Si antes tenías 45% neg y subió a 63%, escribes <strong>63</strong>. El sistema calcula el incremento.</div>
       </div>
       <div style="background:var(--pu50);border:1px solid var(--pu100);border-radius:10px;padding:14px">
         <div style="font-size:12px;font-weight:700;color:var(--pu600);margin-bottom:8px"><i class="ti ti-circle-3" style="vertical-align:-2px;margin-right:6px"></i>ICP recalculado</div>
@@ -423,11 +424,11 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       </div>
       <div style="background:var(--te50);border:1px solid var(--te100);border-radius:10px;padding:14px">
         <div style="font-size:12px;font-weight:700;color:var(--te600);margin-bottom:8px"><i class="ti ti-circle-4" style="vertical-align:-2px;margin-right:6px"></i>Alerta automática</div>
-        <div style="font-size:12px;color:var(--sl600);line-height:1.6">Si el ICP sube ≥20 pts en un corte, se activa <strong>🚨 Alerta Delta</strong> — ignición rápida, acción inmediata.</div>
+        <div style="font-size:12px;color:var(--sl600);line-height:1.6">Si el ICP sube ≥20 pts en un corte → <strong>🚨 Alerta Delta</strong>. Ignición rápida, acción inmediata.</div>
       </div>
     </div>
     <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px">
-      <div style="font-size:11px;font-weight:700;color:#D97706;margin-bottom:8px">⚡ Ejemplo de uso (Opción A — valor total acumulado)</div>
+      <div style="font-size:11px;font-weight:700;color:#D97706;margin-bottom:8px">⚡ Ejemplo (valores totales acumulados)</div>
       <div style="font-family:monospace;font-size:12px;color:var(--sl600);line-height:2">
         Base 10:00 → Neg <strong>20%</strong> · Repros <strong>500K</strong> → ICP <strong>25.1</strong> (GÉLIDO)<br>
         Corte 2 12:30 → Neg <strong>38%</strong> (+18pp) · Repros <strong>1.2M</strong> → ICP <strong>38.5</strong> Δ+13.4<br>
@@ -438,18 +439,14 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   </div>
 </div>
 
-<!-- RESULTADO -->
+<!-- ══ RESULTADO ════════════════════════════════════════════════════════════ -->
 <div id="panel-resultado" class="panel">
-  <div id="res-ph" class="empty"><div class="empty-i"><i class="ti ti-thermometer" style="font-size:40px;color:var(--sl400)"></i></div><p>Completa la <strong>Captura de Datos</strong> y pulsa <strong>Calcular ICP</strong></p></div>
+  <div id="res-ph" class="empty"><div class="empty-i"><i class="ti ti-thermometer" style="font-size:40px;color:var(--sl400)"></i></div><p>Completa <strong>Captura de Datos</strong> y pulsa <strong>Calcular ICP</strong></p></div>
   <div id="res-card" class="hidden">
     <div id="capture-el">
     <div class="rc">
       <div class="rc-hdr">
-        <div>
-          <div class="rc-eye">Termómetro ICP · Célula Yucatán/AO</div>
-          <div class="rc-tema" id="r-tema">—</div>
-          <div class="rc-meta" id="r-meta">—</div>
-        </div>
+        <div><div class="rc-eye">Termómetro ICP · Célula Yucatán/AO</div><div class="rc-tema" id="r-tema">—</div><div class="rc-meta" id="r-meta">—</div></div>
         <div><div class="score-num" id="r-score">—</div><div class="score-lbl">puntos ICP</div></div>
       </div>
       <div class="ts">
@@ -510,14 +507,14 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   </div>
 </div>
 
-<!-- RIESGO NEUTRO -->
+<!-- ══ RIESGO NEUTRO ════════════════════════════════════════════════════════ -->
 <div id="panel-neutro" class="panel">
   <div class="rc" style="padding:20px 22px;margin-bottom:16px">
     <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">
       <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#78350F,#D97706);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-alert-triangle" style="font-size:20px;color:#fff"></i></div>
       <div>
         <div style="font-weight:700;font-size:15px;color:var(--sl800);margin-bottom:4px">Análisis de Riesgo en Zona Neutral</div>
-        <div style="font-size:13px;color:var(--sl600);line-height:1.6">Responde: ¿Qué pasaría si la gente que hoy está neutral se voltea en contra? Simula el peor escenario antes de que ocurra.</div>
+        <div style="font-size:13px;color:var(--sl600);line-height:1.6">¿Qué pasaría si la gente que hoy está neutral se voltea en contra? Simula el peor escenario antes de que ocurra.</div>
       </div>
     </div>
     <div class="sl"><div class="ic"><i class="ti ti-sliders"></i></div>Datos actuales del tema</div>
@@ -525,8 +522,8 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
       <div class="f"><label>% Neutral actual</label><input id="n-neut" type="number" min="0" max="100" placeholder="ej. 58" oninput="calcNeutro()"><span class="hint">Porcentaje de sentimiento neutral</span></div>
       <div class="f"><label>% Negativo actual</label><input id="n-neg" type="number" min="0" max="100" placeholder="ej. 12" oninput="calcNeutro()"><span class="hint">Porcentaje de sentimiento negativo</span></div>
       <div class="f"><label>Reproducciones Negativas</label><input id="n-rep-neg" type="number" min="0" placeholder="ej. 500,000" oninput="calcNeutro()"><span class="hint">Solo repros del contenido negativo</span></div>
-      <div class="f"><label>Reproducciones Neutrales</label><input id="n-rep-neut" type="number" min="0" placeholder="ej. 9,000,000" oninput="calcNeutro()"><span class="hint">Repros del contenido neutral (combustible latente)</span></div>
-      <div class="f"><label>Tope Reproducciones</label><input id="n-tope" type="number" value="5000000" oninput="calcNeutro()"><span class="hint">Sube el tope si tus repros superan 5M</span></div>
+      <div class="f"><label>Reproducciones Neutrales</label><input id="n-rep-neut" type="number" min="0" placeholder="ej. 9,000,000" oninput="calcNeutro()"><span class="hint">Combustible latente</span></div>
+      <div class="f"><label>Tope Reproducciones</label><input id="n-tope" type="number" value="5000000" oninput="calcNeutro()"><span class="hint">Ajusta si tus repros superan 5M</span></div>
     </div>
     <div class="sl"><div class="ic"><i class="ti ti-adjustments"></i></div>Simulación de escenarios</div>
     <div style="margin-bottom:20px">
@@ -539,21 +536,9 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
     </div>
     <div id="neutro-result" class="hidden">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">ICP Hoy (sin cambio)</div>
-          <div id="n-icp-act" style="font-size:28px;font-weight:800">—</div>
-          <div id="n-est-act" style="font-size:11px;font-weight:700;margin-top:4px">—</div>
-        </div>
-        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">ICP si el Neutral detona</div>
-          <div id="n-icp-conv" style="font-size:28px;font-weight:800">—</div>
-          <div id="n-est-conv" style="font-size:11px;font-weight:700;margin-top:4px">—</div>
-        </div>
-        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">Puntos de riesgo latente</div>
-          <div id="n-delta" style="font-size:28px;font-weight:800">—</div>
-          <div style="font-size:11px;color:var(--sl400);margin-top:4px">si el neutro explota</div>
-        </div>
+        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">ICP Hoy (sin cambio)</div><div id="n-icp-act" style="font-size:28px;font-weight:800">—</div><div id="n-est-act" style="font-size:11px;font-weight:700;margin-top:4px">—</div></div>
+        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">ICP si el Neutral detona</div><div id="n-icp-conv" style="font-size:28px;font-weight:800">—</div><div id="n-est-conv" style="font-size:11px;font-weight:700;margin-top:4px">—</div></div>
+        <div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--sl400);margin-bottom:6px">Puntos de riesgo latente</div><div id="n-delta" style="font-size:28px;font-weight:800">—</div><div style="font-size:11px;color:var(--sl400);margin-top:4px">si el neutro explota</div></div>
       </div>
       <div style="margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sl400);margin-bottom:6px"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
@@ -564,20 +549,15 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
           <div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:rgba(0,0,0,.1)"></div>
           <div style="position:absolute;left:75%;top:0;width:1px;height:100%;background:rgba(0,0,0,.1)"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:4px">
-          <span style="color:var(--te600)">GÉLIDO</span><span style="color:#D97706">TIBIO</span><span style="color:#C2410C">CALIENTE</span><span style="color:#991B1B">FUEGO</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;margin-top:4px"><span style="color:var(--te600)">GÉLIDO</span><span style="color:#D97706">TIBIO</span><span style="color:#C2410C">CALIENTE</span><span style="color:#991B1B">FUEGO</span></div>
       </div>
       <div id="n-alerta" style="padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.7;border:1.5px solid"></div>
     </div>
-    <div id="neutro-ph" style="padding:20px;background:var(--sl50);border-radius:10px;text-align:center;color:var(--sl400);font-size:13px">
-      <i class="ti ti-arrow-up" style="font-size:20px;display:block;margin-bottom:8px"></i>
-      Ingresa los datos arriba para ver el análisis de riesgo latente
-    </div>
+    <div id="neutro-ph" style="padding:20px;background:var(--sl50);border-radius:10px;text-align:center;color:var(--sl400);font-size:13px"><i class="ti ti-arrow-up" style="font-size:20px;display:block;margin-bottom:8px"></i>Ingresa los datos arriba para ver el análisis</div>
   </div>
 </div>
 
-<!-- HISTÓRICO -->
+<!-- ══ HISTÓRICO ════════════════════════════════════════════════════════════ -->
 <div id="panel-historico" class="panel">
   <div style="background:var(--pu50);border:1px solid var(--pu100);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:12px">
     <i class="ti ti-info-circle" style="font-size:18px;color:var(--pu600);flex-shrink:0;margin-top:1px"></i>
@@ -597,7 +577,7 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   </div>
 </div>
 
-<!-- REGISTRO -->
+<!-- ══ REGISTRO ═════════════════════════════════════════════════════════════ -->
 <div id="panel-log" class="panel">
   <div class="top-act">
     <button class="copybtn" onclick="expLog()"><i class="ti ti-download"></i> Descargar log</button>
@@ -605,21 +585,15 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
   </div>
   <div class="rc" style="padding:0">
     <div style="padding:14px 20px;border-bottom:1px solid var(--sl200);display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:10px">
-        <i class="ti ti-list-details" style="font-size:18px;color:var(--pu600)"></i>
-        <span style="font-weight:700;font-size:14px;color:var(--sl800)">Registro de Actividad de la Sesión</span>
-      </div>
+      <div style="display:flex;align-items:center;gap:10px"><i class="ti ti-list-details" style="font-size:18px;color:var(--pu600)"></i><span style="font-weight:700;font-size:14px;color:var(--sl800)">Registro de Actividad de la Sesión</span></div>
       <span id="log-count" style="font-size:12px;color:var(--sl400)">0 eventos</span>
     </div>
-    <div id="log-empty" style="text-align:center;padding:40px 20px;color:var(--sl400)">
-      <i class="ti ti-list-details" style="font-size:40px;display:block;margin-bottom:12px"></i>
-      <p>Aún no hay actividad.</p>
-    </div>
+    <div id="log-empty" style="text-align:center;padding:40px 20px;color:var(--sl400)"><i class="ti ti-list-details" style="font-size:40px;display:block;margin-bottom:12px"></i><p>Aún no hay actividad.</p></div>
     <div id="log-list"></div>
   </div>
 </div>
 
-<!-- CONFIG -->
+<!-- ══ CONFIG ════════════════════════════════════════════════════════════════ -->
 <div id="panel-config" class="panel">
   <div class="cc">
     <div class="sl"><div class="ic"><i class="ti ti-building"></i></div>Cuentas</div>
@@ -630,7 +604,7 @@ Gobierno Yucatan</textarea></div>
   </div>
   <div class="cc">
     <div class="sl"><div class="ic"><i class="ti ti-adjustments-horizontal"></i></div>Topes de Normalización por Cuenta</div>
-    <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Cada cuenta puede tener sus propios topes. Selecciona la cuenta para configurar sus valores. Al agregar una cuenta nueva se usarán los topes default hasta que los personalices aquí.</p>
+    <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Cada cuenta puede tener sus propios topes. Al seleccionar una cuenta, carga sus valores. Los topes se pueden ajustar por medición individual en Captura.</p>
     <div class="f b" style="margin-bottom:16px">
       <label>Cuenta a configurar</label>
       <select id="cfg-cuenta-sel" onchange="loadTopesForCuenta()"><option value="">— Selecciona una cuenta —</option></select>
@@ -645,9 +619,19 @@ Gobierno Yucatan</textarea></div>
     </div>
     <div id="topes-empty-msg" style="padding:14px;background:var(--sl50);border-radius:9px;font-size:12px;color:var(--sl400);text-align:center">Selecciona una cuenta para ver y editar sus topes</div>
   </div>
+  <div class="cc" style="border:1.5px solid var(--te100)">
+    <div class="sl"><div class="ic" style="background:linear-gradient(135deg,var(--te600),var(--te400))"><i class="ti ti-file-spreadsheet"></i></div>Calcular Topes desde CSV de Sheets</div>
+    <p style="font-size:12px;color:var(--sl600);margin-bottom:16px;line-height:1.7">Descarga el CSV de Google Sheets (con todas las mediciones), súbelo aquí y el sistema calculará los topes óptimos por cuenta — máximo histórico + 20% de margen.</p>
+    <div style="background:var(--te50);border:1px solid var(--te100);border-radius:9px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--te600);line-height:1.7">
+      <strong>Flujo:</strong> Google Sheets → Descargar CSV → Subir aquí → Aplicar por cuenta
+    </div>
+    <div class="f" style="margin-bottom:16px"><label>Subir CSV de Google Sheets</label><input type="file" id="csv-topes-input" accept=".csv" style="padding:8px 14px;font-size:13px;border:1.5px solid var(--sl200);border-radius:9px;background:var(--sl50);width:100%"></div>
+    <button class="btn btn-s" style="flex:0;padding:11px 20px;font-size:13px" onclick="calcularTopesDesdeCSV()"><i class="ti ti-calculator"></i> Calcular topes automáticamente</button>
+    <div id="csv-topes-resultado" style="display:none;margin-top:16px"></div>
+  </div>
   <div class="cc">
     <div class="sl"><div class="ic"><i class="ti ti-clipboard-list"></i></div>Recomendaciones por Zona</div>
-    <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Personaliza las 3 recomendaciones por nivel. Usa <code>{neg}</code> para negatividad y <code>{reps}</code> para reproducciones.</p>
+    <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Personaliza las 3 recomendaciones por nivel. Usa <code>{neg}</code> y <code>{reps}</code>.</p>
     <div class="zc"><div class="zc-tag tg">🔵 GÉLIDO (0-25 pts)</div>
       <div class="f"><textarea id="rg1" rows="2">Mantener agenda y tono positivo. Sin acciones urgentes.</textarea></div>
       <div class="f" style="margin-top:8px"><textarea id="rg2" rows="2">Monitorear cada 24 horas para detectar cambios.</textarea></div>
@@ -660,7 +644,7 @@ Gobierno Yucatan</textarea></div>
     </div>
     <div class="zc"><div class="zc-tag tc">🟠 CALIENTE (51-75 pts)</div>
       <div class="f"><textarea id="rc1" rows="2">Frenar el vacío: video de 30 seg del titular. Neg {neg} pts + Repros {reps} pts.</textarea></div>
-      <div class="f" style="margin-top:8px"><textarea id="rc2" rows="2">Contención visual: generar contenido que explique la solución.</textarea></div>
+      <div class="f" style="margin-top:8px"><textarea id="rc2" rows="2">Contención visual: contenido que explique la solución.</textarea></div>
       <div class="f" style="margin-top:8px"><textarea id="rc3" rows="2">ALERTA: Si ICP supera 75 en próximo corte, activar CRISIS TOTAL.</textarea></div>
     </div>
     <div class="zc"><div class="zc-tag tf2">🔴 FUEGO (76-100 pts)</div>
@@ -672,7 +656,7 @@ Gobierno Yucatan</textarea></div>
   </div>
   <div class="cc" style="border:1.5px solid #DDD9F7">
     <div class="sl"><div class="ic" style="background:linear-gradient(135deg,var(--pu600),var(--pu400))"><i class="ti ti-lock"></i></div>Contraseña para borrar datos</div>
-    <p>Se solicita al limpiar el Histórico o el Registro. Default: <code>1923</code></p>
+    <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Se solicita al limpiar el Histórico o el Registro. Default: <code>1923</code></p>
     <div class="cg">
       <div class="f"><label>Contraseña actual</label><input id="cfg-pin-old" type="password" placeholder="Contraseña actual"></div>
       <div class="f"><label>Contraseña nueva</label><input id="cfg-pin-new" type="password" placeholder="Mínimo 4 caracteres"></div>
@@ -689,7 +673,7 @@ Gobierno Yucatan</textarea></div>
     <div style="width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,var(--te600),var(--te400));display:flex;align-items:center;justify-content:center;margin-bottom:16px"><i class="ti ti-device-floppy" style="font-size:24px;color:#fff"></i></div>
     <div style="font-size:18px;font-weight:700;color:var(--sl800);margin-bottom:8px">¿Ya exportaste el CSV?</div>
     <div style="font-size:13px;color:var(--sl600);line-height:1.7;margin-bottom:6px">Tienes <strong id="reminder-count">0</strong> mediciones guardadas en este navegador.</div>
-    <div style="font-size:12px;color:var(--sl400);line-height:1.6;margin-bottom:20px">El histórico puede perderse si limpias el caché. Exporta el CSV regularmente como respaldo.</div>
+    <div style="font-size:12px;color:var(--sl400);line-height:1.6;margin-bottom:20px">El histórico puede perderse si limpias el caché. Exporta el CSV regularmente como respaldo permanente.</div>
     <div style="display:flex;gap:10px">
       <button onclick="expCSV();closeReminder()" style="flex:1;padding:12px;border:none;border-radius:9px;background:linear-gradient(135deg,var(--te600),var(--te400));color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit"><i class="ti ti-download" style="vertical-align:-2px;margin-right:6px"></i>Exportar CSV ahora</button>
       <button onclick="closeReminder()" style="padding:12px 16px;border:1.5px solid var(--sl200);border-radius:9px;background:#fff;color:var(--sl600);font-size:14px;cursor:pointer;font-family:inherit">Ahora no</button>
@@ -699,45 +683,57 @@ Gobierno Yucatan</textarea></div>
 
 <div class="footer"><i class="ti ti-thermometer" style="font-size:13px;vertical-align:-2px"></i> Termómetro ICP · Célula Yucatán / AO</div>
 <div class="toast" id="toast"></div>
-
 <script>
+// ═══════════════════════════════════════════════════════════════════
+// TERMÓMETRO ICP — JavaScript completo, sin overrides, sin parches
+// Célula Yucatán / AO — v3.0
+// ═══════════════════════════════════════════════════════════════════
 
-// ══ ESTADO ═══════════════════════════════════════
+// ── CONSTANTES Y ESTADO GLOBAL ───────────────────────────────────
 var SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbwRKNnUJWtB-WvUm6HhGfGTpxCEi8-zaKdwocoD3tuzrUbs-iCf3-IwW5nwa7gKfI3A/exec';
 var hist        = JSON.parse(localStorage.getItem('icp_h') || '[]');
 var session     = { names: [], ts: '' };
-var lastR       = null;
-var cIdx        = 0;
-var dData       = null;
-var actLog      = [];
-var nameCount   = 1;
-var cfg         = loadCfg();
+var lastR       = null;   // último resultado ICP calculado
+var cIdx        = 0;      // contador de cortes Delta
+var dData       = null;   // último cálculo Delta
+var actLog      = [];     // registro de actividad de la sesión
+var nameCount   = 1;      // campos de analista en modal
+var csvSugg     = {};     // sugerencias de topes desde CSV
 
+// ── CONFIGURACIÓN ────────────────────────────────────────────────
 function loadCfg() {
-  try { var s = localStorage.getItem('icp_cfg'); if (s) return JSON.parse(s); } catch(e){}
+  try { var s = localStorage.getItem('icp_cfg'); if (s) return JSON.parse(s); } catch(e) {}
   return {
     cuentas: ['JLC/AO','Gobierno Yucatan'],
     topes: { r:5000000, i:20000, v:50000 },
+    topesPorCuenta: {},
     recs: {
-      g: ['Mantener agenda y tono positivo en redes. Sin acciones urgentes requeridas.',
-          'Monitorear cada 24 horas para detectar cambios en la conversación digital.',
-          'Aprovechar el entorno favorable para publicar logros y avances de agenda.'],
-      t: ['Preparar un comunicado técnico claro y sin ambigüedades sobre el tema detectado.',
-          'Identificar al vocero técnico ideal para responder sin escalar la conversación.',
-          'Activar monitoreo cada 6 horas. Alerta si ICP supera 50 puntos.'],
-      c: ['Frenar el vacío de información: emitir video de 30 seg del titular. Neg {neg} pts + Repros {reps} pts.',
-          'Contención visual: generar contenido que explique la solución e intente viralizarla.',
-          'ALERTA DELTA: Si el ICP supera 75 en el siguiente corte, activar protocolo de CRISIS TOTAL.'],
-      f: ['ACTIVAR PROTOCOLO DE CRISIS: Intervención directa del titular. ICP {neg} pts — CRISIS TOTAL.',
-          'Control de narrativa: saturar canales digitales con contenido que desplace el negativo.',
-          'ALERTA DELTA: Medir cada 2 horas. Si no desciende, evaluar asesoría de crisis externa.']
+      g: ['Mantener agenda y tono positivo. Sin acciones urgentes.',
+          'Monitorear cada 24 horas para detectar cambios.',
+          'Aprovechar el entorno para publicar logros.'],
+      t: ['Preparar comunicado técnico claro sobre el tema.',
+          'Identificar vocero ideal para responder sin escalar.',
+          'Activar monitoreo cada 6 horas. Alerta si ICP supera 50.'],
+      c: ['Frenar el vacío: video de 30 seg del titular. Neg {neg} + Repros {reps}.',
+          'Contención visual: contenido que explique la solución.',
+          'ALERTA: Si ICP supera 75, activar protocolo CRISIS TOTAL.'],
+      f: ['CRISIS TOTAL: Intervención del titular. ICP {neg} pts.',
+          'Saturar canales con contenido que desplace el negativo.',
+          'Medir cada 2 horas. Si no desciende, contratar asesoría de crisis.']
     }
   };
 }
+var cfg = loadCfg();
 
 function getPin() { return localStorage.getItem('icp_pin') || '1923'; }
 
-// ══ MODAL ════════════════════════════════════════
+function getTopesForCuenta(cuenta) {
+  if (!cuenta) return { r: cfg.topes.r, i: cfg.topes.i, v: cfg.topes.v };
+  var key = 'topes_' + cuenta;
+  return (cfg.topesPorCuenta && cfg.topesPorCuenta[key]) || { r: cfg.topes.r, i: cfg.topes.i, v: cfg.topes.v };
+}
+
+// ── MODAL ────────────────────────────────────────────────────────
 function addName() {
   nameCount++;
   if (nameCount > 5) return;
@@ -753,33 +749,34 @@ function addName() {
 function iniciar() {
   var inputs = document.getElementById('names-list').querySelectorAll('input');
   var names  = [];
-  for (var i=0; i<inputs.length; i++) { var v=inputs[i].value.trim(); if(v) names.push(v); }
-  var errEl = document.getElementById('modal-err');
-  if (!names.length) { errEl.style.display='block'; return; }
-  errEl.style.display = 'none';
+  for (var i = 0; i < inputs.length; i++) {
+    var v = inputs[i].value.trim();
+    if (v) names.push(v);
+  }
+  if (!names.length) { document.getElementById('modal-err').style.display = 'block'; return; }
+  document.getElementById('modal-err').style.display = 'none';
   var now = new Date();
-  var ts  = fmtTs(now);
   session.names = names;
-  session.ts    = ts;
-  document.getElementById('modal-wrap').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+  session.ts    = fmtTs(now);
+  document.getElementById('modal-wrap').style.display  = 'none';
+  document.getElementById('app').style.display         = 'block';
   setText('sess-an', names.join(', '));
-  setText('sess-ts', ts);
+  setText('sess-ts', session.ts);
   applyCfg();
   loadCfgUI();
   renderHist();
   renderLog();
-  sv('f-fecha', now.toISOString().slice(0,10));
-  sv('f-per-fi', now.toISOString().slice(0,10));
-  sv('d-per-fi', now.toISOString().slice(0,10));
+  sv('f-fecha',   now.toISOString().slice(0,10));
+  sv('f-per-fi',  now.toISOString().slice(0,10));
+  sv('d-per-fi',  now.toISOString().slice(0,10));
   updPeriodo();
   checkSheetsConnection();
-  logEvt('Sesión iniciada', 'Analista(s): '+names.join(', '));
+  logEvt('Sesión iniciada', 'Analista(s): ' + names.join(', '));
 }
 
 function reLogin() {
   document.getElementById('modal-wrap').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
+  document.getElementById('app').style.display        = 'none';
   document.getElementById('names-list').innerHTML = '<div class="name-row"><span class="name-num">1</span><input type="text" placeholder="Nombre del analista 1"></div>';
   nameCount = 1;
   document.getElementById('btn-add').style.display = 'block';
@@ -789,145 +786,310 @@ document.getElementById('names-list').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') iniciar();
 });
 
-// ══ CONFIG ═══════════════════════════════════════
+document.getElementById('reminder-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeReminder();
+});
+
+// ── CONFIG ───────────────────────────────────────────────────────
 function applyCfg() {
+  // Selector de cuenta en Captura
   var sel = document.getElementById('f-cuenta');
   sel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
-  cfg.cuentas.forEach(function(cta){ sel.innerHTML += '<option>'+cta+'</option>'; });
-  // Topes default (shown until account is selected)
-  sv('f-tr', cfg.topes.r); sv('f-ti', cfg.topes.i); sv('f-tv', cfg.topes.v);
-  // Update display
-  var dispR = document.getElementById('disp-tr');
-  var dispI = document.getElementById('disp-ti');
-  var dispV = document.getElementById('disp-tv');
-  if (dispR) dispR.textContent = Number(cfg.topes.r).toLocaleString('es-MX');
-  if (dispI) dispI.textContent = Number(cfg.topes.i).toLocaleString('es-MX');
-  if (dispV) dispV.textContent = Number(cfg.topes.v).toLocaleString('es-MX');
-  // Config cuenta selector
+  cfg.cuentas.forEach(function(c) { sel.innerHTML += '<option>' + c + '</option>'; });
+
+  // Selector de cuenta en Config
   var cfgSel = document.getElementById('cfg-cuenta-sel');
   if (cfgSel) {
     cfgSel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
-    cfg.cuentas.forEach(function(cta){ cfgSel.innerHTML += '<option>'+cta+'</option>'; });
+    cfg.cuentas.forEach(function(c) { cfgSel.innerHTML += '<option>' + c + '</option>'; });
   }
+
+  // Topes default en Captura
+  sv('f-tr', cfg.topes.r);
+  sv('f-ti', cfg.topes.i);
+  sv('f-tv', cfg.topes.v);
 }
 
 function loadCfgUI() {
   document.getElementById('cfg-cuentas').value = cfg.cuentas.join('\n');
-  sv('cfg-tr', cfg.topes.r); sv('cfg-ti', cfg.topes.i); sv('cfg-tv', cfg.topes.v);
-  ['g','t','c','f'].forEach(function(k){
-    [1,2,3].forEach(function(n){ var el=document.getElementById('r'+k+n); if(el) el.value=cfg.recs[k][n-1]||''; });
+  sv('cfg-tr', cfg.topes.r);
+  sv('cfg-ti', cfg.topes.i);
+  sv('cfg-tv', cfg.topes.v);
+  ['g','t','c','f'].forEach(function(k) {
+    [1,2,3].forEach(function(n) {
+      var el = document.getElementById('r' + k + n);
+      if (el) el.value = cfg.recs[k][n-1] || '';
+    });
   });
 }
 
 function saveCfg() {
   cfg.cuentas = document.getElementById('cfg-cuentas').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
-  cfg.topes.r = parseFloat(sv_get('cfg-tr'))||5000000;
-  cfg.topes.i = parseFloat(sv_get('cfg-ti'))||20000;
-  cfg.topes.v = parseFloat(sv_get('cfg-tv'))||50000;
-  ['g','t','c','f'].forEach(function(k){
-    cfg.recs[k]=[1,2,3].map(function(n){var el=document.getElementById('r'+k+n);return el?el.value:'';});
+  cfg.topes.r = parseFloat(sv_get('cfg-tr')) || 5000000;
+  cfg.topes.i = parseFloat(sv_get('cfg-ti')) || 20000;
+  cfg.topes.v = parseFloat(sv_get('cfg-tv')) || 50000;
+  ['g','t','c','f'].forEach(function(k) {
+    cfg.recs[k] = [1,2,3].map(function(n) {
+      var el = document.getElementById('r' + k + n);
+      return el ? el.value : '';
+    });
   });
   localStorage.setItem('icp_cfg', JSON.stringify(cfg));
   applyCfg();
-  toast('Configuración guardada','ok');
-  logEvt('Config guardada','Cuentas: '+cfg.cuentas.join(', '));
+  toast('Configuración guardada', 'ok');
+  logEvt('Config guardada', 'Cuentas: ' + cfg.cuentas.join(', '));
 }
 
 function cambiarPin() {
   var oldPin = document.getElementById('cfg-pin-old').value;
-  var newPin = (document.getElementById('cfg-pin-new').value||'').trim();
-  if (oldPin !== getPin()) { toast('Contraseña actual incorrecta','err'); return; }
-  if (!newPin || newPin.length < 4) { toast('La nueva contraseña debe tener al menos 4 caracteres','err'); return; }
+  var newPin = (document.getElementById('cfg-pin-new').value || '').trim();
+  if (oldPin !== getPin()) { toast('Contraseña actual incorrecta', 'err'); return; }
+  if (!newPin || newPin.length < 4) { toast('La nueva contraseña debe tener al menos 4 caracteres', 'err'); return; }
   localStorage.setItem('icp_pin', newPin);
-  sv('cfg-pin-old',''); sv('cfg-pin-new','');
-  toast('Contraseña actualizada','ok');
-  logEvt('Contraseña cambiada','Por: '+session.names.join(', '));
+  sv('cfg-pin-old', ''); sv('cfg-pin-new', '');
+  toast('Contraseña actualizada', 'ok');
+  logEvt('Contraseña cambiada', 'Por: ' + session.names.join(', '));
 }
 
-// ══ TABS ═════════════════════════════════════════
+function onCuentaChange() {
+  var cuenta = document.getElementById('f-cuenta').value;
+  var t = getTopesForCuenta(cuenta);
+  sv('f-tr', t.r); sv('f-ti', t.i); sv('f-tv', t.v);
+  var hR = document.getElementById('hint-tr');
+  var hI = document.getElementById('hint-ti');
+  var hV = document.getElementById('hint-tv');
+  if (hR) hR.textContent = cuenta ? 'Config para ' + cuenta + ': ' + fmt(t.r) : 'Config cuenta: ' + fmt(t.r);
+  if (hI) hI.textContent = cuenta ? 'Config para ' + cuenta + ': ' + fmt(t.i) : 'Config cuenta: ' + fmt(t.i);
+  if (hV) hV.textContent = cuenta ? 'Config para ' + cuenta + ': ' + fmt(t.v) : 'Config cuenta: ' + fmt(t.v);
+  logPreview();
+}
+
+function loadTopesForCuenta() {
+  var cuenta = document.getElementById('cfg-cuenta-sel').value;
+  var empty  = document.getElementById('topes-empty-msg');
+  var panel  = document.getElementById('topes-por-cuenta');
+  if (!cuenta) { empty.style.display='block'; panel.style.display='none'; return; }
+  empty.style.display = 'none'; panel.style.display = 'block';
+  var t = getTopesForCuenta(cuenta);
+  sv('cfg-tr', t.r); sv('cfg-ti', t.i); sv('cfg-tv', t.v);
+}
+
+function guardarTopesCuenta() {
+  var cuenta = document.getElementById('cfg-cuenta-sel').value;
+  if (!cuenta) { toast('Selecciona una cuenta primero', 'err'); return; }
+  if (!cfg.topesPorCuenta) cfg.topesPorCuenta = {};
+  cfg.topesPorCuenta['topes_'+cuenta] = {
+    r: parseFloat(sv_get('cfg-tr')) || 5000000,
+    i: parseFloat(sv_get('cfg-ti')) || 20000,
+    v: parseFloat(sv_get('cfg-tv')) || 50000
+  };
+  localStorage.setItem('icp_cfg', JSON.stringify(cfg));
+  toast('Topes guardados para ' + cuenta, 'ok');
+  logEvt('Topes actualizados', 'Cuenta: ' + cuenta);
+}
+
+// ── TOPES DESDE CSV ──────────────────────────────────────────────
+function parseCsvLine(line) {
+  var result = [], current = '', inQ = false;
+  for (var i = 0; i < line.length; i++) {
+    var ch = line[i];
+    if (ch === '"') { inQ = !inQ; }
+    else if (ch === ',' && !inQ) { result.push(current.trim()); current = ''; }
+    else { current += ch; }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+function calcularTopesDesdeCSV() {
+  var input = document.getElementById('csv-topes-input');
+  if (!input || !input.files || !input.files[0]) { toast('Selecciona un archivo CSV primero','err'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var lines = e.target.result.split('\n').filter(function(l){ return l.trim(); });
+      if (lines.length < 2) { toast('CSV vacío o inválido','err'); return; }
+      var headers = lines[0].split(',').map(function(h){ return h.replace(/"/g,'').trim().toLowerCase(); });
+      var iCuenta  = -1, iRepros = -1, iInterac = -1, iVol = -1;
+      headers.forEach(function(h,i) {
+        if (h.includes('cuenta'))   iCuenta  = i;
+        if (h.includes('reproduc')) iRepros  = i;
+        if (h.includes('interac'))  iInterac = i;
+        if (h.includes('menc'))     iVol     = i;
+      });
+      if (iCuenta < 0 || iRepros < 0) { toast('CSV no tiene columnas Cuenta y Reproducciones','err'); return; }
+      var maxPorCuenta = {};
+      for (var i = 1; i < lines.length; i++) {
+        var cols = parseCsvLine(lines[i]);
+        var cuenta = (cols[iCuenta]||'').replace(/"/g,'').trim();
+        if (!cuenta) continue;
+        var repros  = parseFloat((cols[iRepros]||'').replace(/[^0-9.]/g,''))||0;
+        var interac = iInterac>=0 ? parseFloat((cols[iInterac]||'').replace(/[^0-9.]/g,''))||0 : 0;
+        var vol     = iVol>=0     ? parseFloat((cols[iVol]||'').replace(/[^0-9.]/g,''))||0     : 0;
+        if (!maxPorCuenta[cuenta]) maxPorCuenta[cuenta] = {r:0,i:0,v:0,n:0};
+        if (repros  > maxPorCuenta[cuenta].r) maxPorCuenta[cuenta].r = repros;
+        if (interac > maxPorCuenta[cuenta].i) maxPorCuenta[cuenta].i = interac;
+        if (vol     > maxPorCuenta[cuenta].v) maxPorCuenta[cuenta].v = vol;
+        maxPorCuenta[cuenta].n++;
+      }
+      var cuentas = Object.keys(maxPorCuenta);
+      if (!cuentas.length) { toast('No se encontraron datos por cuenta','err'); return; }
+      csvSugg = {};
+      var html = '<div style="font-size:12px;font-weight:700;color:var(--sl800);margin-bottom:12px">Topes sugeridos (máximo histórico + 20%):</div>';
+      cuentas.forEach(function(cuenta) {
+        var d  = maxPorCuenta[cuenta];
+        var tR = Math.ceil(d.r * 1.2 / 100000) * 100000 || 5000000;
+        var tI = Math.ceil(d.i * 1.2 / 1000)   * 1000   || 20000;
+        var tV = Math.ceil(d.v * 1.2 / 1000)   * 1000   || 50000;
+        csvSugg[cuenta] = {r:tR, i:tI, v:tV};
+        html += '<div style="background:var(--sl50);border:1px solid var(--sl200);border-radius:10px;padding:14px;margin-bottom:10px">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+          +'<span style="font-weight:700;font-size:13px;color:var(--pu600)">'+cuenta+'</span>'
+          +'<span style="font-size:11px;color:var(--sl400)">'+d.n+' medición'+(d.n!==1?'es':'')+' analizadas</span></div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">'
+          +'<div style="text-align:center"><div style="font-size:10px;color:var(--sl400);text-transform:uppercase">Repros</div><div style="font-size:15px;font-weight:700;color:var(--pu600)">'+fmt(tR)+'</div><div style="font-size:10px;color:var(--sl400)">máx: '+fmt(d.r)+'</div></div>'
+          +'<div style="text-align:center"><div style="font-size:10px;color:var(--sl400);text-transform:uppercase">Interac</div><div style="font-size:15px;font-weight:700;color:var(--pu600)">'+fmt(tI)+'</div><div style="font-size:10px;color:var(--sl400)">máx: '+fmt(d.i)+'</div></div>'
+          +'<div style="text-align:center"><div style="font-size:10px;color:var(--sl400);text-transform:uppercase">Menciones</div><div style="font-size:15px;font-weight:700;color:var(--pu600)">'+fmt(tV)+'</div><div style="font-size:10px;color:var(--sl400)">máx: '+fmt(d.v)+'</div></div>'
+          +'</div>'
+          +'<button onclick="aplicarTopesCSV(this.dataset.cuenta)" data-cuenta="'+cuenta+'" class="btn btn-s" style="flex:0;width:100%;padding:9px;font-size:12px">'
+          +'<i class="ti ti-check"></i> Aplicar para '+cuenta+'</button></div>';
+      });
+      document.getElementById('csv-topes-resultado').innerHTML = html;
+      document.getElementById('csv-topes-resultado').style.display = 'block';
+      toast('CSV analizado — '+cuentas.length+' cuenta'+(cuentas.length!==1?'s':'')+' encontrada'+(cuentas.length!==1?'s':''), 'ok');
+      logEvt('CSV topes analizado', cuentas.length+' cuentas: '+cuentas.join(', '));
+    } catch(err) {
+      toast('Error al procesar CSV: ' + err.message, 'err');
+    }
+  };
+  reader.readAsText(input.files[0], 'UTF-8');
+}
+
+function aplicarTopesCSV(elOrCuenta) {
+  var cuenta = typeof elOrCuenta === "string" ? elOrCuenta : elOrCuenta.dataset.cuenta;
+  var s = csvSugg[cuenta];
+  if (!s) return;
+  if (!cfg.topesPorCuenta) cfg.topesPorCuenta = {};
+  cfg.topesPorCuenta['topes_'+cuenta] = {r:s.r, i:s.i, v:s.v};
+  localStorage.setItem('icp_cfg', JSON.stringify(cfg));
+  var cuentaActual = document.getElementById('f-cuenta') ? document.getElementById('f-cuenta').value : '';
+  if (cuentaActual === cuenta) onCuentaChange();
+  toast('Topes aplicados para ' + cuenta, 'ok');
+  logEvt('Topes aplicados desde CSV', 'Cuenta: '+cuenta+' R='+fmt(s.r)+' I='+fmt(s.i)+' V='+fmt(s.v));
+}
+
+// ── TABS ─────────────────────────────────────────────────────────
 function goTab(name, btn) {
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('panel-'+name).classList.add('on');
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.tab').forEach(function(t)   { t.classList.remove('on'); });
+  document.getElementById('panel-' + name).classList.add('on');
   if (btn) btn.classList.add('on');
-  if (name==='historico') renderHist();
-  if (name==='log') renderLog();
+  if (name === 'historico') renderHist();
+  if (name === 'log')       renderLog();
 }
 
 function goTabDirect(name) {
-  var tabs = ['captura','delta','resultado','neutro','historico','log','config'];
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('panel-'+name).classList.add('on');
-  var i = tabs.indexOf(name);
-  if (i>=0) document.querySelectorAll('.tab')[i].classList.add('on');
+  var order = ['captura','delta','resultado','neutro','historico','log','config'];
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelectorAll('.tab').forEach(function(t)   { t.classList.remove('on'); });
+  document.getElementById('panel-' + name).classList.add('on');
+  var idx = order.indexOf(name);
+  if (idx >= 0) document.querySelectorAll('.tab')[idx].classList.add('on');
 }
 
-// ══ LIVE UPDATES ══════════════════════════════════
+// ── LIVE UPDATES ─────────────────────────────────────────────────
 function updSum() {
-  var t=(pf('f-neg')||0)+(pf('f-neut')||0)+(pf('f-pos')||0);
-  var el=document.getElementById('sum-v');
-  el.textContent=t.toFixed(0)+'%';
-  el.className='pill-val '+(Math.abs(t-100)<0.5?'ok':t>0?'err':'neu');
+  var t = (pf('f-neg')||0) + (pf('f-neut')||0) + (pf('f-pos')||0);
+  var el = document.getElementById('sum-v');
+  el.textContent  = t.toFixed(0) + '%';
+  el.className    = 'pill-val ' + (Math.abs(t-100) < 0.5 ? 'ok' : t > 0 ? 'err' : 'neu');
 }
 function updTot() {
-  setText('tot-r', fmt((pf('f-rn')||0)+(pf('f-rnt')||0)+(pf('f-rp')||0)));
-  setText('tot-i', fmt((pf('f-lk')||0)+(pf('f-sh')||0)+(pf('f-cm')||0)));
+  var repros  = (pf('f-rn')||0)+(pf('f-rnt')||0)+(pf('f-rp')||0);
+  var interac = (pf('f-lk')||0)+(pf('f-sh')||0)+(pf('f-cm')||0);
+  setText('tot-r', fmt(repros));
+  setText('tot-i', fmt(interac));
+  var tR = pf('f-tr') || 5000000;
+  var tI = pf('f-ti') || 20000;
+  var wR = document.getElementById('warn-repros');
+  var wI = document.getElementById('warn-interac');
+  if (wR) {
+    var over = repros > tR;
+    wR.style.display = over ? 'block' : 'none';
+    if (over) setText('warn-repros-txt',
+      'Las Reproducciones ingresadas (' + fmt(repros) + ') superan el tope configurado (' + fmt(tR) + '). '
+      + 'Ajusta el tope en este formulario si el volumen es inusualmente alto.');
+  }
+  if (wI) {
+    var overI = interac > tI;
+    wI.style.display = overI ? 'block' : 'none';
+    if (overI) setText('warn-interac-txt',
+      'Las Interacciones ingresadas (' + fmt(interac) + ') superan el tope configurado (' + fmt(tI) + '). '
+      + 'Ajusta el tope en este formulario si el volumen es inusualmente alto.');
+  }
+}
+function chkVol() {
+  var vol = pf('f-vol') || 0;
+  var tV  = pf('f-tv') || 50000;
+  var wV  = document.getElementById('warn-vol');
+  if (wV) {
+    var over = vol > tV;
+    wV.style.display = over ? 'block' : 'none';
+    if (over) setText('warn-vol-txt',
+      'Las Menciones ingresadas (' + fmt(vol) + ') superan el tope configurado (' + fmt(tV) + '). '
+      + 'Ajusta el tope en este formulario si el volumen es inusualmente alto.');
+  }
 }
 function logPreview() {
-  setText('log-corte',  gv('f-hora')||'—');
-  setText('log-cuenta', document.getElementById('f-cuenta').value||'—');
-  setText('log-tema',   gv('f-tema')||'—');
+  setText('log-corte',  gv('f-hora') || '—');
+  setText('log-cuenta', document.getElementById('f-cuenta').value || '—');
+  setText('log-tema',   gv('f-tema') || '—');
 }
 function toggleCorteNum() {
   document.getElementById('corte-num-wrap').style.display =
-    document.getElementById('f-esact').value==='si'?'block':'none';
+    document.getElementById('f-esact').value === 'si' ? 'block' : 'none';
 }
 
-// ══ PERÍODO ═══════════════════════════════════════
+// ── PERÍODO ──────────────────────────────────────────────────────
 function fmtFecha(iso) {
   if (!iso) return '';
-  var d = new Date(iso+'T12:00');
+  var d    = new Date(iso + 'T12:00');
   var dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  var p = function(n){ return String(n).padStart(2,'0'); };
-  return dias[d.getDay()]+' '+p(d.getDate())+'/'+p(d.getMonth()+1);
+  var p    = function(n) { return String(n).padStart(2,'0'); };
+  return dias[d.getDay()] + ' ' + p(d.getDate()) + '/' + p(d.getMonth()+1);
 }
-
 function fmtPeriodo(fi, hi, ff, hf) {
   if (!fi) return '';
-  var inicio = fmtFecha(fi)+(hi?' '+hi:'');
-  var fin    = ff?(fmtFecha(ff)+(hf?' '+hf:'')):'';
+  var inicio = fmtFecha(fi) + (hi ? ' ' + hi : '');
+  var fin    = ff ? (fmtFecha(ff) + (hf ? ' ' + hf : '')) : '';
   var dur    = '';
   if (fi && ff) {
-    var dI = new Date(fi+(hi?'T'+hi:'T00:00'));
-    var dF = new Date(ff+(hf?'T'+hf:'T23:59'));
-    var diff = dF-dI;
-    if (!isNaN(diff) && diff>0) {
+    var dI   = new Date(fi + (hi ? 'T'+hi : 'T00:00'));
+    var dF   = new Date(ff + (hf ? 'T'+hf : 'T23:59'));
+    var diff = dF - dI;
+    if (!isNaN(diff) && diff > 0) {
       var dias  = Math.floor(diff/86400000);
       var horas = Math.floor((diff%86400000)/3600000);
-      if (dias>0&&horas>0)  dur='  ('+dias+' día'+(dias>1?'s':'')+' '+horas+' hr'+(horas>1?'s':'')+')';
-      else if (dias>0)      dur='  ('+dias+' día'+(dias>1?'s':'')+')';
-      else if (horas>0)     dur='  ('+horas+' hr'+(horas>1?'s':'')+')';
+      if (dias>0 && horas>0) dur = '  ('+dias+' día'+(dias>1?'s':'')+' '+horas+' hr'+(horas>1?'s':'')+')';
+      else if (dias>0)       dur = '  ('+dias+' día'+(dias>1?'s':'')+')';
+      else if (horas>0)      dur = '  ('+horas+' hr'+(horas>1?'s':'')+')';
     }
   }
-  return fin ? inicio+'  →  '+fin+dur : inicio;
+  return fin ? inicio + '  →  ' + fin + dur : inicio;
 }
-
 function updPeriodo() {
-  var txt = fmtPeriodo(gv('f-per-fi'),gv('f-per-hi'),gv('f-per-ff'),gv('f-per-hf'));
+  var txt  = fmtPeriodo(gv('f-per-fi'), gv('f-per-hi'), gv('f-per-ff'), gv('f-per-hf'));
   var prev = document.getElementById('periodo-preview');
   if (prev) prev.textContent = txt;
   sv('f-hora', txt);
   logPreview();
 }
-
 function updPeriodoDelta() {
-  var txt = fmtPeriodo(gv('d-per-fi'),gv('d-per-hi'),gv('d-per-ff'),gv('d-per-hf'));
+  var txt  = fmtPeriodo(gv('d-per-fi'), gv('d-per-hi'), gv('d-per-ff'), gv('d-per-hf'));
   var prev = document.getElementById('delta-periodo-preview');
   if (prev) prev.textContent = txt;
   sv('d-hora', txt);
 }
-
 function updCortePreview(el) {
   var block = el.closest ? el.closest('.cb') : null;
   if (!block) return;
@@ -935,60 +1097,83 @@ function updCortePreview(el) {
   var hi = block.querySelector('.ch-hi') ? block.querySelector('.ch-hi').value : '';
   var ff = block.querySelector('.ch-ff') ? block.querySelector('.ch-ff').value : '';
   var hf = block.querySelector('.ch-hf') ? block.querySelector('.ch-hf').value : '';
-  var txt = fmtPeriodo(fi,hi,ff,hf);
-  var prev = block.querySelector('.ch-preview');
-  if (prev) prev.textContent = txt;
+  var txt    = fmtPeriodo(fi, hi, ff, hf);
+  var prev   = block.querySelector('.ch-preview');
   var hidden = block.querySelector('.ch');
-  if (hidden) hidden.value = txt;
+  if (prev)   prev.textContent = txt;
+  if (hidden) hidden.value     = txt;
 }
 
-// ══ ICP CALC ══════════════════════════════════════
+// ── CÁLCULO ICP ──────────────────────────────────────────────────
 function getZona(icp) {
-  if (icp<=25) return {e:'GÉLIDO',   s:'Sin Riesgo',        col:'#1D6FA4', bg:'#EFF6FF', zk:'g'};
-  if (icp<=50) return {e:'TIBIO',    s:'Riesgo Localizado', col:'#D97706', bg:'#FFFBEB', zk:'t'};
-  if (icp<=75) return {e:'CALIENTE', s:'Riesgo Alto',       col:'#C2410C', bg:'#FFF7ED', zk:'c'};
-  return              {e:'FUEGO',    s:'Crisis Total',       col:'#991B1B', bg:'#FEF2F2', zk:'f'};
+  if (icp <= 25) return { e:'GÉLIDO',   s:'Sin Riesgo',        col:'#1D6FA4', bg:'#EFF6FF', zk:'g' };
+  if (icp <= 50) return { e:'TIBIO',    s:'Riesgo Localizado', col:'#D97706', bg:'#FFFBEB', zk:'t' };
+  if (icp <= 75) return { e:'CALIENTE', s:'Riesgo Alto',       col:'#C2410C', bg:'#FFF7ED', zk:'c' };
+  return               { e:'FUEGO',    s:'Crisis Total',       col:'#991B1B', bg:'#FEF2F2', zk:'f' };
+}
+function doCalc(neg, repros, interac, vol, tR, tI, tV) {
+  var sN = neg * 100;
+  var sR = Math.min(repros  / tR, 1) * 100;
+  var sI = Math.min(interac / tI, 1) * 100;
+  var sV = Math.min(vol     / tV, 1) * 100;
+  var icp = Math.round(((sN*.45)+(sR*.30)+(sI*.15)+(sV*.10))*100)/100;
+  return { icp:icp, sN:sN, sR:sR, sI:sI, sV:sV };
 }
 
-function doCalc(neg, repros, interac, vol, tR, tI, tV) {
-  var sN=neg*100, sR=Math.min(repros/tR,1)*100, sI=Math.min(interac/tI,1)*100, sV=Math.min(vol/tV,1)*100;
-  var icp=Math.round(((sN*.45)+(sR*.30)+(sI*.15)+(sV*.10))*100)/100;
-  return {icp:icp, sN:sN, sR:sR, sI:sI, sV:sV};
+function validarTopes() {
+  var tR = pf('f-tr') || 5000000, tI = pf('f-ti') || 20000, tV = pf('f-tv') || 50000;
+  var repros  = (pf('f-rn')||0)+(pf('f-rnt')||0)+(pf('f-rp')||0);
+  var interac = (pf('f-lk')||0)+(pf('f-sh')||0)+(pf('f-cm')||0);
+  var vol     = pf('f-vol') || 0;
+  var errores = [];
+  if (repros  > tR) errores.push('Reproducciones ('+fmt(repros)+') exceden el tope ('+fmt(tR)+'). Ajusta el tope en Captura o en Configuración.');
+  if (interac > tI) errores.push('Interacciones ('+fmt(interac)+') exceden el tope ('+fmt(tI)+'). Ajusta el tope en Captura o en Configuración.');
+  if (vol     > tV) errores.push('Menciones ('+fmt(vol)+') exceden el tope ('+fmt(tV)+'). Ajusta el tope en Captura o en Configuración.');
+  return errores;
 }
 
 function calcICP() {
+  var errores = validarTopes();
+  if (errores.length) {
+    toast('⚠️ ' + errores[0], 'err');
+    errores.slice(1).forEach(function(e,i){ setTimeout(function(){ toast('⚠️ '+e,'err'); },(i+1)*900); });
+    return;
+  }
   var neg=(pf('f-neg')||0)/100, neut=(pf('f-neut')||0)/100, pos=(pf('f-pos')||0)/100;
   var rn=pf('f-rn')||0, rnt=pf('f-rnt')||0, rp=pf('f-rp')||0;
-  var lk=pf('f-lk')||0, sh=pf('f-sh')||0, cm=pf('f-cm')||0;
-  var vol=pf('f-vol')||0;
+  var lk=pf('f-lk')||0, sh=pf('f-sh')||0,  cm=pf('f-cm')||0;
+  var vol  = pf('f-vol') || 0;
   var tR=pf('f-tr')||cfg.topes.r, tI=pf('f-ti')||cfg.topes.i, tV=pf('f-tv')||cfg.topes.v;
-  if (!neg&&!(rn+rnt+rp)) { toast('Ingresa al menos % Negativo y Reproducciones','err'); return; }
+  if (!neg && !(rn+rnt+rp)) { toast('Ingresa al menos % Negativo y Reproducciones','err'); return; }
   var repros=rn+rnt+rp, interac=lk+sh+cm;
-  var res=doCalc(neg,repros,interac,vol,tR,tI,tV);
-  var z=getZona(res.icp);
-  var now=new Date(), ts=fmtTs(now);
-  var esAct=document.getElementById('f-esact').value==='si';
-  var corteNum=esAct?(parseInt(gv('f-cortenum'))||2):1;
-  var tema=gv('f-tema')||'Sin tema';
+  var res = doCalc(neg, repros, interac, vol, tR, tI, tV);
+  var z   = getZona(res.icp);
+  var now = new Date();
+  var esAct   = document.getElementById('f-esact').value === 'si';
+  var corteNum= esAct ? (parseInt(gv('f-cortenum'))||2) : 1;
+  var tema    = gv('f-tema') || 'Sin tema';
   lastR = {
     neg:neg, neut:neut, pos:pos, rn:rn, rnt:rnt, rp:rp,
     repros:repros, lk:lk, sh:sh, cm:cm, interac:interac, vol:vol,
     icp:res.icp, sN:res.sN, sR:res.sR, sI:res.sI, sV:res.sV, zona:z,
-    tema:tema, etiq:esAct?tema+' — Corte '+corteNum:tema,
+    tema:tema, etiq:esAct ? tema+' — Corte '+corteNum : tema,
     id:gv('f-id')||'—', cuenta:document.getElementById('f-cuenta').value||'—',
     fecha:gv('f-fecha')||today(), hora:gv('f-hora')||'—',
-    url:gv('f-url')||'', analistas:session.names.join(', '), ts:ts,
-    esAct:esAct, corteNum:corteNum, estado:z.e
+    url:gv('f-url')||'', analistas:session.names.join(', '), ts:fmtTs(now),
+    esAct:esAct, corteNum:corteNum, estado:z.e,
+    _saved: false
   };
   renderRes(lastR);
   goTabDirect('resultado');
-  toast('ICP: '+res.icp+' pts — '+z.e,'ok');
-  logEvt('Cálculo ICP','Tema: '+tema+' · ICP: '+res.icp+' · '+z.e+' · '+lastR.analistas);
+  toast('ICP: '+res.icp+' pts — '+z.e, 'ok');
+  logEvt('Cálculo ICP', 'Tema: '+tema+' · ICP: '+res.icp+' pts · '+z.e);
 }
 
 function getRecs(icp, sN, sR) {
-  var k=icp<=25?'g':icp<=50?'t':icp<=75?'c':'f';
-  return cfg.recs[k].map(function(r){ return r.replace(/{neg}/g,sN.toFixed(0)).replace(/{reps}/g,sR.toFixed(0)); });
+  var k = icp<=25?'g':icp<=50?'t':icp<=75?'c':'f';
+  return cfg.recs[k].map(function(r) {
+    return r.replace(/{neg}/g, sN.toFixed(0)).replace(/{reps}/g, sR.toFixed(0));
+  });
 }
 
 function renderRes(d) {
@@ -996,235 +1181,204 @@ function renderRes(d) {
   document.getElementById('res-card').classList.remove('hidden');
   setText('r-tema', d.etiq);
   document.getElementById('r-meta').innerHTML =
-    (d.id!=='—'?'ID: '+d.id+' · ':'')+d.cuenta+' · '+d.fecha+(d.hora&&d.hora!=='—'?' · '+d.hora:'')+'<br>Analista(s): '+d.analistas+' · Registrado: '+d.ts;
-  var sc=document.getElementById('r-score');
-  sc.textContent=d.icp.toFixed(2); sc.style.color=d.zona.col;
-  var fill=document.getElementById('t-fill');
-  fill.style.height=d.icp+'%';
-  fill.style.background='linear-gradient(to top,'+d.zona.col+','+d.zona.col+'88)';
-  document.getElementById('t-bulb').style.background=d.zona.col;
-  ['g','t','c','f'].forEach(function(k){
-    var el=document.getElementById('z-'+k);
+    (d.id!=='—'?'ID: '+d.id+' · ':'')+d.cuenta+' · '+d.fecha+(d.hora&&d.hora!=='—'?' · '+d.hora:'')
+    +'<br>Analista(s): '+d.analistas+' · Registrado: '+d.ts;
+  var sc = document.getElementById('r-score');
+  sc.textContent = d.icp.toFixed(2); sc.style.color = d.zona.col;
+  var fill = document.getElementById('t-fill');
+  fill.style.height     = d.icp + '%';
+  fill.style.background = 'linear-gradient(to top,'+d.zona.col+','+d.zona.col+'88)';
+  document.getElementById('t-bulb').style.background = d.zona.col;
+  ['g','t','c','f'].forEach(function(k) {
+    var el = document.getElementById('z-'+k);
     el.classList.remove('act'); el.style.opacity='0.4';
   });
   document.getElementById('z-'+d.zona.zk).classList.add('act');
   document.getElementById('z-'+d.zona.zk).style.opacity='1';
-  var pr={g:{bg:'#E8F8F4',bc:'#B8EAD9',tc:'#0F7258',msg:'Sin riesgo. Mantener agenda.'},
-          t:{bg:'#FFFBEB',bc:'#FDE68A',tc:'#D97706',msg:'Preparar respuesta técnica. Monitoreo activo.'},
-          c:{bg:'#FFF7ED',bc:'#FED7AA',tc:'#C2410C',msg:'Despliegue de voceros. Riesgo Alto inminente.'},
-          f:{bg:'#FEF2F2',bc:'#FECACA',tc:'#991B1B',msg:'INTERVENCIÓN DEL TITULAR. Control de daños.'}};
-  var p=pr[d.zona.zk], pel=document.getElementById('r-proto');
-  pel.style.cssText='background:'+p.bg+';border-color:'+p.bc+';color:'+p.tc;
-  pel.textContent='Protocolo: '+p.msg;
-  [['neg',d.sN,d.sN*.45],['rep',d.sR,d.sR*.30],['int',d.sI,d.sI*.15],['vol',d.sV,d.sV*.10]].forEach(function(x){
-    document.getElementById('b-'+x[0]).style.width=x[1]+'%';
+  var pr = {
+    g:{bg:'#E8F8F4',bc:'#B8EAD9',tc:'#0F7258',msg:'Sin riesgo. Mantener agenda.'},
+    t:{bg:'#FFFBEB',bc:'#FDE68A',tc:'#D97706',msg:'Preparar respuesta técnica. Monitoreo activo.'},
+    c:{bg:'#FFF7ED',bc:'#FED7AA',tc:'#C2410C',msg:'Despliegue de voceros. Riesgo Alto inminente.'},
+    f:{bg:'#FEF2F2',bc:'#FECACA',tc:'#991B1B',msg:'🚨 INTERVENCIÓN DEL TITULAR. Control de daños.'}
+  };
+  var p = pr[d.zona.zk], pel = document.getElementById('r-proto');
+  pel.style.cssText = 'background:'+p.bg+';border-color:'+p.bc+';color:'+p.tc;
+  pel.textContent   = 'Protocolo: '+p.msg;
+  [['neg',d.sN,d.sN*.45],['rep',d.sR,d.sR*.30],['int',d.sI,d.sI*.15],['vol',d.sV,d.sV*.10]].forEach(function(x) {
+    document.getElementById('b-'+x[0]).style.width = x[1]+'%';
     setText('cv-'+x[0], x[1].toFixed(1));
     setText('ci-'+x[0], '= '+x[2].toFixed(2));
   });
   setText('s-neg',(d.neg*100).toFixed(0)+'%'); setText('s-neut',(d.neut*100).toFixed(0)+'%'); setText('s-pos',(d.pos*100).toFixed(0)+'%');
   setText('r-rn',fmt(d.rn)); setText('r-rnt',fmt(d.rnt)); setText('r-rp',fmt(d.rp)); setText('r-rt',fmt(d.repros));
-  setText('r-lk',fmt(d.lk)); setText('r-sh',fmt(d.sh)); setText('r-cm',fmt(d.cm)); setText('r-it',fmt(d.interac));
+  setText('r-lk',fmt(d.lk)); setText('r-sh',fmt(d.sh));  setText('r-cm',fmt(d.cm)); setText('r-it',fmt(d.interac));
   setText('r-vol',fmt(d.vol));
-  var recs=getRecs(d.icp,d.sN,d.sR), cols=['#DC2626','#C2410C','#1D4ED8'];
-  document.getElementById('recs-list').innerHTML=recs.map(function(r,i){
+  var recs = getRecs(d.icp,d.sN,d.sR), cols=['#DC2626','#C2410C','#1D4ED8'];
+  document.getElementById('recs-list').innerHTML = recs.map(function(r,i) {
     return '<div class="rec"><div class="rec-n" style="background:'+cols[i]+'">'+(i+1)+'</div><div class="rec-t">'+r+'</div></div>';
   }).join('');
 }
 
-// ══ GUARDAR ═══════════════════════════════════════
+// ── GUARDAR MEDICIÓN ─────────────────────────────────────────────
 function guardarMedConImagen() {
   if (!lastR) { toast('Primero calcula el ICP','err'); return; }
-  if (lastR._saved) { toast('Esta medición ya fue guardada — calcula de nuevo para guardar otra','err'); return; }
+  if (lastR._saved) { toast('Esta medición ya fue guardada','err'); return; }
   lastR._saved = true;
-  var entry = Object.assign({}, lastR, {savedAt:new Date().toISOString()});
+  var entry = Object.assign({}, lastR, { savedAt: new Date().toISOString() });
   hist.push(entry);
   localStorage.setItem('icp_h', JSON.stringify(hist));
   renderHist();
   if (hist.length % 5 === 0) showExportReminder(hist.length);
-  toast('Guardando en Histórico y Google Sheets…','ok');
-  logEvt('Guardado local','Tema: '+entry.tema+' · ICP: '+entry.icp);
+  toast('Guardando en Histórico y Drive…','ok');
+  logEvt('Guardado local', 'Tema: '+entry.tema+' · ICP: '+entry.icp+' pts');
+  // Capturar imagen del resultado y enviar
   var el = document.getElementById('capture-el');
   if (el && typeof html2canvas !== 'undefined') {
-    html2canvas(el,{backgroundColor:'#ffffff',scale:1.5,useCORS:true,logging:false}).then(function(canvas){
-      canvas.toBlob(function(blob){
-        var r=new FileReader();
-        r.onload=function(ev){ enviarASheets(entry, ev.target.result.split(',')[1]); };
+    html2canvas(el, {backgroundColor:'#ffffff', scale:1.5, useCORS:true, logging:false}).then(function(canvas) {
+      canvas.toBlob(function(blob) {
+        var r = new FileReader();
+        r.onload = function(ev) { enviarASheets(entry, ev.target.result.split(',')[1]); };
         r.readAsDataURL(blob);
-      },'image/jpeg',0.88);
-    }).catch(function(){ enviarASheets(entry,null); });
+      }, 'image/jpeg', 0.88);
+    }).catch(function() { enviarASheets(entry, null); });
   } else {
-    enviarASheets(entry,null);
+    enviarASheets(entry, null);
   }
 }
 
-function enviarASheets(entry, imgBase64) {
-  if (!SHEETS_URL) return;
-  var payload = {
-    fecha:    entry.fecha||'', hora:entry.hora||entry.horaCorte||'', ts:entry.ts||'',
-    id:       entry.id||entry.idTema||'', tema:entry.tema||'', etiq:entry.etiq||entry.tema||'',
-    cuenta:   entry.cuenta||'', analistas:entry.analistas||'',
-    neg:      ((entry.neg||0)*100).toFixed(0)+'%',
-    neut:     ((entry.neut||0)*100).toFixed(0)+'%',
-    pos:      ((entry.pos||0)*100).toFixed(0)+'%',
-    repros:   entry.repros||0, interac:entry.interac||0, vol:entry.vol||0,
-    icp:      entry.icp||0,
-    delta:    entry.delta!=null?entry.delta:'',
-    estado:   entry.estado||'', url:entry.url||'',
-    esCorte:  entry.esCorte||false, imgBase64:imgBase64||''
-  };
-  var json = JSON.stringify(payload);
-  // Try fetch (works from http/https), fall back to hidden form (works from file://)
-  try {
-    fetch(SHEETS_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:json})
-      .then(function(){ toast('Guardado en Google Sheets','ok'); logEvt('Guardado en Sheets','Tema: '+payload.tema+' · '+payload.cuenta); })
-      .catch(function(){ enviarViaForm(json); });
-  } catch(e) { enviarViaForm(json); }
-}
-
-function enviarViaForm(json) {
-  try {
-    var nm = 'sf'+Date.now();
-    var ifr = document.createElement('iframe');
-    ifr.name = nm; ifr.style.display = 'none';
-    document.body.appendChild(ifr);
-    var frm = document.createElement('form');
-    frm.method = 'POST'; frm.action = SHEETS_URL; frm.target = nm; frm.style.display = 'none';
-    var inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = 'data'; inp.value = json;
-    frm.appendChild(inp);
-    document.body.appendChild(frm);
-    frm.submit();
-    setTimeout(function(){ try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){} }, 5000);
-    toast('Guardado en Google Sheets','ok');
-    logEvt('Guardado en Sheets','Tema: '+JSON.parse(json).tema);
-  } catch(err) {
-    toast('Sin conexión — guardado solo local','err');
-    logEvt('Error Sheets', String(err));
-  }
-}
-
-function checkSheetsConnection() {
-  var el=document.getElementById('sheets-status');
-  if(!el) return;
-  el.textContent='🔄 Sheets';
-  fetch(SHEETS_URL,{method:'GET',mode:'no-cors'})
-    .then(function(){ el.textContent='🟢 Sheets'; })
-    .catch(function(){ el.textContent='🔴 Sheets'; });
-}
-
-// ══ LIMPIAR ═══════════════════════════════════════
-function limpiar() {
-  ['f-id','f-tema','f-url','f-neg','f-neut','f-pos','f-rn','f-rnt','f-rp',
-   'f-lk','f-sh','f-cm','f-vol','f-per-fi','f-per-hi','f-per-ff','f-per-hf','f-hora'].forEach(function(id){sv(id,'');});
-  document.getElementById('f-cuenta').value='';
-  sv('f-fecha', today());
-  sv('f-per-fi', today());
-  document.getElementById('f-esact').value='no';
-  document.getElementById('corte-num-wrap').style.display='none';
-  setText('sum-v','—');
-  document.getElementById('sum-v').className='pill-val neu';
-  setText('tot-r','0'); setText('tot-i','0');
-  var prev=document.getElementById('periodo-preview'); if(prev) prev.textContent='';
-  lastR=null; toast('Formulario limpio','');
-}
-
-// ══ DELTA ═════════════════════════════════════════
+// ── FACTOR DELTA ─────────────────────────────────────────────────
 function addCorte() {
   cIdx++;
-  var id='c'+cIdx;
-  var div=document.createElement('div');
-  div.className='cb'; div.id=id;
-  var h='<div class="cb-hdr"><span class="cb-lbl">Corte #'+cIdx+'</span>';
-  h+='<button class="cb-del">✕ Eliminar</button></div>';
-  h+='<div class="cb-fs" style="grid-template-columns:1fr 1fr;">';
-  h+='<div class="f" style="grid-column:span 2"><label style="font-size:11px">Período del corte</label>';
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:3px">';
-  h+='<div><label style="font-size:10px;color:#94A3B8">F. inicio</label><input type="date" class="ch-fi" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none"></div>';
-  h+='<div><label style="font-size:10px;color:#94A3B8">H. inicio</label><input type="time" class="ch-hi" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none"></div>';
-  h+='<div><label style="font-size:10px;color:#94A3B8">F. fin</label><input type="date" class="ch-ff" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none"></div>';
-  h+='<div><label style="font-size:10px;color:#94A3B8">H. fin</label><input type="time" class="ch-hf" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none"></div>';
-  h+='</div><div class="ch-preview" style="font-size:10px;color:#4F45A8;font-weight:600;margin-top:3px;min-height:14px"></div>';
-  h+='<input type="hidden" class="ch"></div>';
-  h+='<div class="f"><label style="font-size:11px">% Negativo total en este corte</label><input type="number" class="cn" min="0" max="100" step="1" placeholder="ej. 63 (total acumulado)"></div>';
-  h+='<div class="f"><label style="font-size:11px">Repros Negativo totales en este corte</label><input type="number" class="crn" min="0" placeholder="ej. 3,200,000 (total)"></div>';
-  h+='<div class="f"><label style="font-size:11px">Repros Neutral totales en este corte</label><input type="number" class="crnt" min="0" placeholder="ej. 400,000 (total)"></div>';
-  h+='</div>';
-  div.innerHTML=h;
-  // Wire delete button safely
-  div.querySelector('.cb-del').onclick=function(){ div.remove(); };
-  // Wire period pickers
-  var inputs=div.querySelectorAll('.ch-fi,.ch-hi,.ch-ff,.ch-hf');
-  inputs.forEach(function(inp){ inp.oninput=function(){ updCortePreview(inp); }; });
+  var id  = 'c' + cIdx;
+  var div = document.createElement('div');
+  div.className = 'cb'; div.id = id;
+  var h = '<div class="cb-hdr"><span class="cb-lbl">Corte #'+cIdx+'</span>';
+  h += '<button class="cb-del">✕ Eliminar</button></div>';
+  h += '<div class="cb-fs" style="grid-template-columns:1fr 1fr;">';
+  h += '<div class="f" style="grid-column:span 2"><label style="font-size:11px">Período del corte</label>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:3px">';
+  h += '<div><label style="font-size:10px;color:#94A3B8">F. inicio</label><input type="date" class="ch-fi" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none;background:#F8FAFC"></div>';
+  h += '<div><label style="font-size:10px;color:#94A3B8">H. inicio</label><input type="time" class="ch-hi" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none;background:#F8FAFC"></div>';
+  h += '<div><label style="font-size:10px;color:#94A3B8">F. fin</label><input type="date" class="ch-ff" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none;background:#F8FAFC"></div>';
+  h += '<div><label style="font-size:10px;color:#94A3B8">H. fin</label><input type="time" class="ch-hf" style="padding:6px 8px;font-size:12px;width:100%;border:1.5px solid #E2E8F0;border-radius:7px;outline:none;background:#F8FAFC"></div>';
+  h += '</div><div class="ch-preview" style="font-size:10px;color:#4F45A8;font-weight:600;margin-top:3px;min-height:14px"></div>';
+  h += '<input type="hidden" class="ch"></div>';
+  h += '<div class="f"><label style="font-size:11px">% Negativo total en este corte</label><input type="number" class="cn" min="0" max="100" step="1" placeholder="ej. 63 (total acumulado)" oninput="chkCorte(this)"></div>';
+  h += '<div class="f"><label style="font-size:11px">Repros Negativo totales</label><input type="number" class="crn" min="0" placeholder="ej. 3,200,000" oninput="chkCorte(this)"></div>';
+  h += '<div class="f"><label style="font-size:11px">Repros Neutral totales</label><input type="number" class="crnt" min="0" placeholder="ej. 400,000" oninput="chkCorte(this)"></div>';
+  h += '<div class="cb-warn" style="display:none;grid-column:span 2;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:9px;padding:10px 14px;font-size:12px;color:#991B1B">'
+    + '<i class="ti ti-alert-triangle" style="vertical-align:-2px;margin-right:6px"></i><span class="cb-warn-txt"></span></div>';
+  h += '</div>';
+  div.innerHTML = h;
+  div.querySelector('.cb-del').onclick = function() { div.remove(); };
+  div.querySelectorAll('.ch-fi,.ch-hi,.ch-ff,.ch-hf').forEach(function(inp) {
+    inp.oninput = function() { updCortePreview(inp); };
+  });
   document.getElementById('cortes-list').appendChild(div);
 }
 
+function chkCorte(el) {
+  var block   = el.closest ? el.closest('.cb') : null;
+  if (!block) return;
+  var neg     = parseFloat(block.querySelector('.cn').value)   || 0;
+  var rn      = parseFloat(block.querySelector('.crn').value)  || 0;
+  var rnt     = parseFloat(block.querySelector('.crnt').value) || 0;
+  var repros  = rn + rnt;
+  var tR      = pf('f-tr') || 5000000;
+  var warns   = [];
+  if (neg > 100) warns.push('% Negativo (' + neg + '%) no puede superar 100%.');
+  if (repros > tR) warns.push('Reproducciones (' + fmt(repros) + ') superan el tope (' + fmt(tR) + ').');
+  var wDiv    = block.querySelector('.cb-warn');
+  var wTxt    = block.querySelector('.cb-warn-txt');
+  if (wDiv && wTxt) {
+    wDiv.style.display = warns.length ? 'block' : 'none';
+    wTxt.textContent   = warns.join(' ');
+  }
+}
+
 function limpiarDelta() {
-  sv('d-tema',''); sv('d-hora','');
-  ['d-per-fi','d-per-hi','d-per-ff','d-per-hf'].forEach(function(id){sv(id,'');});
-  sv('d-base','');
-  document.getElementById('cortes-list').innerHTML='';
-  cIdx=0; dData=null;
+  sv('d-tema',''); sv('d-base',''); sv('d-hora','');
+  ['d-per-fi','d-per-hi','d-per-ff','d-per-hf'].forEach(function(id){ sv(id,''); });
+  document.getElementById('cortes-list').innerHTML = '';
+  cIdx = 0; dData = null;
   document.getElementById('delta-res').classList.add('hidden');
   document.getElementById('d-alrt').classList.add('hidden');
-  var totDiv = document.getElementById('d-totales');
-  if (totDiv) totDiv.style.display = 'none';
-  var prev=document.getElementById('delta-periodo-preview'); if(prev) prev.textContent='';
+  document.getElementById('d-totales').style.display = 'none';
+  var prev = document.getElementById('delta-periodo-preview');
+  if (prev) prev.textContent = '';
 }
 
 function calcDelta() {
-  var tema=gv('d-tema')||'Sin nombre';
-  var icpBase=parseFloat(gv('d-base'))||0;
-  var horaB=gv('d-hora')||'—';
+  var tema    = gv('d-tema') || 'Sin nombre';
+  var icpBase = parseFloat(gv('d-base')) || 0;
+  var horaB   = gv('d-hora') || '—';
   if (!icpBase) { toast('Ingresa el ICP base','err'); return; }
-  var cortes=document.querySelectorAll('#cortes-list .cb');
+  var cortes = document.querySelectorAll('#cortes-list .cb');
   if (!cortes.length) { toast('Agrega al menos un corte','err'); return; }
-  var tR=cfg.topes.r, tI=cfg.topes.i, tV=cfg.topes.v;
-  // Opción A: user inputs TOTAL accumulated value per corte
-  var negBase = lastR ? lastR.neg : 0;
-  var repBase = lastR ? (lastR.repros||0) : 0;
-  var pts=[{h:horaB, icp:icpBase, delta:null, cn:0,
-    negAcum:negBase, negBase:negBase,
-    repAcum:repBase, repBase:repBase,
-    negInc:0, repInc:0}];
-  cortes.forEach(function(row,i){
-    var h=row.querySelector('.ch').value||'—';
-    var negTotal = (parseFloat(row.querySelector('.cn').value)||0)/100; // total acumulado
-    var repNegTotal = parseFloat(row.querySelector('.crn').value)||0;
-    var repNeutTotal = parseFloat(row.querySelector('.crnt').value)||0;
-    var repTotal = repNegTotal + repNeutTotal;
-    var negNew = Math.min(negTotal, 1);
-    var repNew = repTotal;
-    var negInc = Math.round((negNew - pts[pts.length-1].negAcum)*100*100)/100; // incremento en ppts
-    var repInc = repNew - pts[pts.length-1].repAcum;
-    var res=doCalc(negNew,repNew,lastR?lastR.interac:0,lastR?lastR.vol:0,tR,tI,tV);
-    var delta=Math.round((res.icp-pts[pts.length-1].icp)*100)/100;
-    pts.push({h:h,icp:res.icp,delta:delta,cn:i+1,
-      negAcum:negNew, repAcum:repNew,
-      negInc:negInc, repInc:repInc});
+
+  // Validar topes en cada corte
+  var tR = pf('f-tr') || cfg.topes.r;
+  var errGlobal = [];
+  cortes.forEach(function(row, i) {
+    var neg = parseFloat(row.querySelector('.cn').value) || 0;
+    var rn  = parseFloat(row.querySelector('.crn').value)  || 0;
+    var rnt = parseFloat(row.querySelector('.crnt').value) || 0;
+    if (neg > 100) errGlobal.push('Corte '+(i+1)+': % Negativo ('+neg+'%) no puede superar 100%.');
+    if (rn+rnt > tR) errGlobal.push('Corte '+(i+1)+': Reproducciones ('+fmt(rn+rnt)+') exceden el tope ('+fmt(tR)+').');
   });
-  dData={tema:tema,pts:pts,ts:fmtTs(new Date()),an:session.names.join(', ')};
-  var maxD=-Infinity, ignIdx=0;
-  pts.slice(1).forEach(function(p,i){ if(p.delta>maxD){maxD=p.delta;ignIdx=i+1;} });
-  var alerta=maxD>=20;
-  document.getElementById('d-alrt').classList.toggle('hidden',!alerta);
+  if (errGlobal.length) {
+    toast('⚠️ ' + errGlobal[0],'err');
+    errGlobal.slice(1).forEach(function(e,i){ setTimeout(function(){ toast('⚠️ '+e,'err'); },(i+1)*900); });
+    return;
+  }
+
+  var tI = pf('f-ti') || cfg.topes.i, tV = pf('f-tv') || cfg.topes.v;
+  var negBase = lastR ? lastR.neg : 0;
+  var pts = [{ h:horaB, icp:icpBase, delta:null, cn:0, negAcum:negBase, repAcum:lastR?lastR.repros:0, negInc:0, repInc:0 }];
+
+  cortes.forEach(function(row, i) {
+    var h        = row.querySelector('.ch').value || '—';
+    var negTotal = (parseFloat(row.querySelector('.cn').value)||0) / 100;
+    var repNeg   = parseFloat(row.querySelector('.crn').value)  || 0;
+    var repNeut  = parseFloat(row.querySelector('.crnt').value) || 0;
+    var repTotal = repNeg + repNeut;
+    var prev     = pts[pts.length-1];
+    var negInc   = Math.round((negTotal - prev.negAcum)*100*100)/100;
+    var repInc   = repTotal - prev.repAcum;
+    var res      = doCalc(negTotal, repTotal, lastR?lastR.interac:0, lastR?lastR.vol:0, tR, tI, tV);
+    var delta    = Math.round((res.icp - prev.icp)*100)/100;
+    pts.push({ h:h, icp:res.icp, delta:delta, cn:i+1, negAcum:negTotal, repAcum:repTotal, negInc:negInc, repInc:repInc });
+  });
+
+  dData = { tema:tema, pts:pts, ts:fmtTs(new Date()), an:session.names.join(', '), _saved:false };
+
+  var maxD = -Infinity, ignIdx = 0;
+  pts.slice(1).forEach(function(p,i) { if (p.delta > maxD) { maxD=p.delta; ignIdx=i+1; } });
+  var alerta = maxD >= 20;
+  document.getElementById('d-alrt').classList.toggle('hidden', !alerta);
   document.getElementById('delta-res').classList.remove('hidden');
-  var icpF=pts[pts.length-1].icp, zF=getZona(icpF), dTot=icpF-icpBase;
-  setText('d-ttl-out',tema);
-  document.getElementById('d-final').textContent=icpF.toFixed(2)+' pts';
-  document.getElementById('d-final').style.color=zF.col;
-  setText('d-res-sum',pts.length+' cortes · ICP: '+icpBase+' → '+icpF+' pts (Δ '+( dTot>=0?'+':'')+dTot.toFixed(2)+') · '+dData.an);
-  document.getElementById('d-timeline').innerHTML=pts.map(function(p,i){
-    var z=getZona(p.icp);
-    var ds=p.delta===null?'base':(p.delta>=0?'+':'')+p.delta.toFixed(1)+' pts';
-    var dc=p.delta===null?'#64748B':p.delta>=20?'#991B1B':p.delta>0?'#C2410C':'#15803D';
-    var lbl=i===0?'Base':'Corte '+p.cn;
-    var ig=i>0&&i===ignIdx&&p.delta>=5?' ⚡':'';
-    var negPct = (p.negAcum*100).toFixed(0)+'%';
+
+  var icpF = pts[pts.length-1].icp;
+  var zF   = getZona(icpF);
+  var dTot = icpF - icpBase;
+
+  setText('d-ttl-out', tema);
+  document.getElementById('d-final').textContent = icpF.toFixed(2)+' pts';
+  document.getElementById('d-final').style.color = zF.col;
+  setText('d-res-sum', pts.length+' cortes · ICP: '+icpBase+' → '+icpF+' pts (Δ '+(dTot>=0?'+':'')+dTot.toFixed(2)+') · '+dData.an);
+
+  document.getElementById('d-timeline').innerHTML = pts.map(function(p,i) {
+    var z   = getZona(p.icp);
+    var ds  = p.delta===null ? 'base' : (p.delta>=0?'+':'')+p.delta.toFixed(1)+' pts';
+    var dc  = p.delta===null ? '#64748B' : p.delta>=20?'#991B1B' : p.delta>0?'#C2410C':'#15803D';
+    var lbl = i===0 ? 'Base' : 'Corte '+p.cn;
+    var ig  = (i>0 && i===ignIdx && p.delta>=5) ? ' ⚡' : '';
+    var negPct    = (p.negAcum*100).toFixed(0)+'%';
     var negIncStr = i>0 && p.negInc ? (p.negInc>0?'▲ +':'▼ ')+Math.abs(p.negInc).toFixed(0)+'pp' : '';
-    var repStr = p.repAcum ? fmt(p.repAcum) : '—';
+    var repStr    = p.repAcum ? fmt(p.repAcum) : '—';
     var repIncStr = i>0 && p.repInc ? (p.repInc>0?'▲ +':'▼ ')+fmt(Math.abs(p.repInc)) : '';
     return '<div class="tl-r">'
-      +'<div style="flex:0 0 180px">'
+      +'<div style="flex:0 0 190px">'
       +'<div style="font-size:10px;font-weight:600;color:#0F172A">'+p.h+'</div>'
       +'<div style="font-size:9px;color:#94A3B8;margin-top:1px">'+lbl+'</div>'
       +'<div style="font-size:10px;margin-top:3px;color:#DC2626">Neg: '+negPct+' <span style="color:'+(p.negInc>0?'#DC2626':'#15803D')+'">'+negIncStr+'</span></div>'
@@ -1235,77 +1389,63 @@ function calcDelta() {
       +'<span class="tl-d" style="color:'+dc+'">'+ds+ig+'</span>'
       +'<span class="tl-e" style="color:'+z.col+'">'+z.e+'</span></div>';
   }).join('');
-  var tend=dTot>0?'📈 ESCALANDO':dTot<0?'📉 DESCENDIENDO':'➡️ ESTABLE';
-  var concEl=document.getElementById('d-conc');
-  concEl.style.cssText='background:'+zF.bg+';border-color:'+zF.col+'55;color:'+zF.col;
-  concEl.innerHTML='<strong>'+tend+'</strong> · '+zF.e+' — '+zF.s+'<br>ICP: '+icpBase.toFixed(2)+' → '+icpF.toFixed(2)+' pts<br>'
+
+  var tend = dTot>0?'📈 ESCALANDO':dTot<0?'📉 DESCENDIENDO':'➡️ ESTABLE';
+  var concEl = document.getElementById('d-conc');
+  concEl.style.cssText = 'background:'+zF.bg+';border-color:'+zF.col+'55;color:'+zF.col;
+  concEl.innerHTML = '<strong>'+tend+'</strong> · '+zF.e+' — '+zF.s+'<br>'
+    +'ICP: '+icpBase.toFixed(2)+' → '+icpF.toFixed(2)+' pts<br>'
     +(alerta?'🚨 ALERTA DELTA: Salto máximo +'+maxD.toFixed(1)+' pts.':'✅ Velocidad controlada.')+'<br>'
     +(ignIdx>0?'⚡ Mayor ignición: Corte '+ignIdx+' ('+pts[ignIdx].h+') +'+pts[ignIdx].delta.toFixed(1)+' pts':'');
-  // Populate totales finales
-  var ptFinal = pts[pts.length-1];
-  var ptBase  = pts[0];
-  var tR = cfg.topes.r, tI = cfg.topes.i, tV = cfg.topes.v;
-  var negF  = ptFinal.negAcum || 0;
-  var repNF = ptFinal.repAcum || 0;
-  // Estimate neutral repros from base ratio
-  var baseRepNeut = lastR ? (lastR.rnt || 0) : 0;
-  var baseRepNeg  = lastR ? (lastR.rn  || 0) : 0;
-  var baseRepTot  = lastR ? (lastR.repros || 1) : 1;
-  var ratioNeut   = baseRepTot > 0 ? baseRepNeut / baseRepTot : 0;
-  var estRepNeut  = Math.round(repNF * ratioNeut);
-  var estRepNeg   = repNF - estRepNeut;
 
-  var sN  = negF * 100;
-  var sR  = Math.min(repNF / tR, 1) * 100;
-  var sI  = lastR ? Math.min((lastR.interac||0) / tI, 1) * 100 : 0;
-  var sV  = lastR ? Math.min((lastR.vol||0) / tV, 1) * 100 : 0;
+  // Totales finales
+  var ptF  = pts[pts.length-1];
+  var sN   = ptF.negAcum*100;
+  var sR   = Math.min(ptF.repAcum/tR,1)*100;
+  var sI   = lastR ? Math.min((lastR.interac||0)/tI,1)*100 : 0;
+  var sV   = lastR ? Math.min((lastR.vol||0)/tV,1)*100     : 0;
+  var ratN = lastR && lastR.repros ? (lastR.rnt||0)/lastR.repros : 0;
+  var estN = Math.round(ptF.repAcum * ratN);
+  var estNeg = ptF.repAcum - estN;
+  var incNeg = Math.round((ptF.negAcum - pts[0].negAcum)*100*100)/100;
+  var incRep = ptF.repAcum - pts[0].repAcum;
+  var incIcp = Math.round((icpF - icpBase)*100)/100;
 
-  var baseNeg = ptBase.negAcum || 0;
-  var baseRep = ptBase.repAcum || 0;
-  var incNeg  = Math.round((negF - baseNeg) * 100 * 100) / 100;
-  var incRep  = repNF - baseRep;
-  var incIcp  = Math.round((icpF - icpBase) * 100) / 100;
+  document.getElementById('d-totales').style.display = 'block';
+  setText('dt-neg',  (ptF.negAcum*100).toFixed(0)+'%');
+  setText('dt-neut', lastR ? ((lastR.neut||0)*100).toFixed(0)+'%' : '—');
+  setText('dt-pos',  lastR ? ((lastR.pos||0)*100).toFixed(0)+'%'  : '—');
+  setText('dt-rep-neg',  fmt(estNeg));
+  setText('dt-rep-neut', fmt(estN));
+  setText('dt-rep-tot',  fmt(ptF.repAcum));
+  [['neg',sN,sN*.45],['rep',sR,sR*.30],['int',sI,sI*.15],['vol',sV,sV*.10]].forEach(function(x) {
+    var b = document.getElementById('dt-bar-'+x[0]);
+    if (b) b.style.width = x[1]+'%';
+    setText('dt-cv-'+x[0], x[1].toFixed(1));
+    setText('dt-ci-'+x[0], '= '+x[2].toFixed(2));
+  });
+  var elIN = document.getElementById('dt-inc-neg');
+  setText('dt-inc-neg', (incNeg>=0?'▲ +':'')+incNeg.toFixed(1)+' pp  ('+(pts[0].negAcum*100).toFixed(0)+'% → '+(ptF.negAcum*100).toFixed(0)+'%)');
+  if (elIN) elIN.style.color = incNeg>0?'#DC2626':'#15803D';
+  var elIR = document.getElementById('dt-inc-rep');
+  setText('dt-inc-rep', (incRep>=0?'▲ +':'▼ ')+fmt(Math.abs(incRep))+'  ('+fmt(pts[0].repAcum)+' → '+fmt(ptF.repAcum)+')');
+  if (elIR) elIR.style.color = incRep>0?'#DC2626':'#15803D';
+  var elII = document.getElementById('dt-inc-icp');
+  setText('dt-inc-icp', (incIcp>=0?'▲ +':'')+incIcp.toFixed(2)+' pts  ('+icpBase.toFixed(2)+' → '+icpF.toFixed(2)+')');
+  if (elII) elII.style.color = incIcp>0?'#C2410C':'#15803D';
 
-  var totDiv = document.getElementById('d-totales');
-  if (totDiv) {
-    totDiv.style.display = 'block';
-    // Sentimiento
-    setText('dt-neg',  (negF*100).toFixed(0)+'%');
-    setText('dt-neut', lastR ? ((lastR.neut||0)*100).toFixed(0)+'%' : '—');
-    setText('dt-pos',  lastR ? ((lastR.pos||0)*100).toFixed(0)+'%'  : '—');
-    // Reproducciones
-    setText('dt-rep-neg',  fmt(estRepNeg));
-    setText('dt-rep-neut', fmt(estRepNeut));
-    setText('dt-rep-tot',  fmt(repNF));
-    // Barras desglose
-    var bars = [['neg',sN,sN*.45,'#DC2626'],['rep',sR,sR*.30,'#7C3AED'],['int',sI,sI*.15,'#1D4ED8'],['vol',sV,sV*.10,'#15803D']];
-    bars.forEach(function(x){
-      var b = document.getElementById('dt-bar-'+x[0]);
-      if (b) b.style.width = x[1]+'%';
-      setText('dt-cv-'+x[0], x[1].toFixed(1));
-      setText('dt-ci-'+x[0], '= '+x[2].toFixed(2));
-    });
-    // Incrementos
-    setText('dt-inc-neg', (incNeg>=0?'▲ +':'')+incNeg.toFixed(1)+' pp  ('+((baseNeg*100).toFixed(0))+'% → '+(negF*100).toFixed(0)+'%)');
-    document.getElementById('dt-inc-neg').style.color = incNeg > 0 ? '#DC2626' : '#15803D';
-    setText('dt-inc-rep', (incRep>=0?'▲ +':'▼ ')+fmt(Math.abs(incRep))+'  ('+fmt(baseRep)+' → '+fmt(repNF)+')');
-    document.getElementById('dt-inc-rep').style.color = incRep > 0 ? '#DC2626' : '#15803D';
-    setText('dt-inc-icp', (incIcp>=0?'▲ +':'')+incIcp.toFixed(2)+' pts  ('+icpBase.toFixed(2)+' → '+icpF.toFixed(2)+')');
-    document.getElementById('dt-inc-icp').style.color = incIcp > 0 ? '#C2410C' : '#15803D';
-  }
-
-  logEvt('Delta calculado','Tema: '+tema+' · '+pts.length+' cortes · ICP final: '+icpF.toFixed(2));
+  logEvt('Delta calculado', 'Tema: '+tema+' · '+pts.length+' cortes · ICP final: '+icpF.toFixed(2));
 }
 
 function guardarDelta() {
   if (!dData) { toast('Primero calcula el Delta','err'); return; }
   if (dData._saved) { toast('Estos cortes ya fueron guardados','err'); return; }
   dData._saved = true;
-  var cuenta=lastR?lastR.cuenta:'—', fecha=lastR?lastR.fecha:today();
-  var idTema=lastR?lastR.id:'—', url=lastR?lastR.url:'';
-  dData.pts.forEach(function(p,i){
-    var esBase=i===0;
-    var entry={
+  var cuenta = lastR?lastR.cuenta:'—', fecha=lastR?lastR.fecha:today();
+  var idTema  = lastR?lastR.id:'—',   url=lastR?lastR.url:'';
+  dData.pts.forEach(function(p, i) {
+    var esBase = i === 0;
+    var entry  = {
       tema:dData.tema, etiq:esBase?dData.tema:dData.tema+' — Corte '+p.cn,
       id:idTema, cuenta:cuenta, fecha:fecha, hora:p.h,
       ts:dData.ts, analistas:dData.an,
@@ -1319,22 +1459,24 @@ function guardarDelta() {
     hist.push(entry);
     setTimeout(function(e){ enviarASheets(e,null); }, i*600, entry);
   });
-  localStorage.setItem('icp_h',JSON.stringify(hist));
+  localStorage.setItem('icp_h', JSON.stringify(hist));
   renderHist();
   toast(dData.pts.length+' cortes guardados','ok');
-  logEvt('Delta guardado','Tema: '+dData.tema+' · '+dData.pts.length+' cortes');
+  logEvt('Delta guardado', 'Tema: '+dData.tema+' · '+dData.pts.length+' cortes');
 }
 
-// ══ HISTÓRICO ═════════════════════════════════════
+// ── HISTÓRICO ────────────────────────────────────────────────────
 function renderHist() {
-  var empty=document.getElementById('hist-empty'), wrap=document.getElementById('hist-wrap');
+  var empty = document.getElementById('hist-empty');
+  var wrap  = document.getElementById('hist-wrap');
   if (!hist.length) { empty.classList.remove('hidden'); wrap.classList.add('hidden'); return; }
   empty.classList.add('hidden'); wrap.classList.remove('hidden');
-  var zc={'GÉLIDO':'#1D6FA4','TIBIO':'#D97706','CALIENTE':'#C2410C','FUEGO':'#991B1B'};
-  var rows='';
-  hist.slice().reverse().forEach(function(d){
-    var col=zc[d.estado]||'#64748B', isC=d.esCorte;
-    rows+='<tr>'
+  var zc = { GÉLIDO:'#1D6FA4', TIBIO:'#D97706', CALIENTE:'#C2410C', FUEGO:'#991B1B' };
+  var rows = '';
+  hist.slice().reverse().forEach(function(d) {
+    var col = zc[d.estado] || '#64748B';
+    var isC = d.esCorte;
+    rows += '<tr>'
       +'<td style="white-space:nowrap;font-weight:'+(isC?400:600)+'">'+(isC?'↳ ':'')
       +'<span class="chip" style="background:'+col+'22;color:'+col+'">'+(d.id||'—')+'</span> '+(d.etiq||d.tema)+'</td>'
       +'<td style="color:#64748B;white-space:nowrap">'+(d.fecha||'—')+'</td>'
@@ -1342,101 +1484,93 @@ function renderHist() {
       +'<td style="color:#94A3B8;font-family:monospace;font-size:10px;white-space:nowrap">'+(d.ts||'—')+'</td>'
       +'<td>'+(d.cuenta||'—')+'</td>'
       +'<td style="color:#4F45A8;font-size:11px">'+(d.analistas||'—')+'</td>'
-      +'<td style="color:#DC2626;font-weight:700">'+((d.neg||0)*100).toFixed(0)+'%'+(isC?' <span style="font-size:9px;color:#94A3B8">acum</span>':'')+'</td>'
+      +'<td style="color:#DC2626;font-weight:700">'+((d.neg||0)*100).toFixed(0)+'%'+(isC?'<span style="font-size:9px;color:#94A3B8"> acum</span>':'')+'</td>'
       +'<td>'+fmt(d.repros)+'</td><td>'+fmt(d.interac)+'</td><td>'+fmt(d.vol)+'</td>'
-      +'<td style="color:'+col+';font-weight:800;font-size:14px">'+d.icp.toFixed(2)+'<br>'
-      +'<span style="font-size:9px;font-weight:400;color:#94A3B8">'+(isC&&d.delta!=null?(d.delta>=0?'Δ +':'Δ ')+d.delta.toFixed(1):'')+'</span></td>'
+      +'<td style="color:'+col+';font-weight:800;font-size:14px">'+d.icp.toFixed(2)
+      +'<br><span style="font-size:9px;font-weight:400;color:#94A3B8">'+(isC&&d.delta!=null?(d.delta>=0?'Δ +':'Δ ')+d.delta.toFixed(1):'')+'</span></td>'
       +'<td><span class="badge" style="background:'+col+'22;color:'+col+'">'+(d.estado||'—')+'</span></td>'
       +'<td>'+(d.url?'<a href="'+d.url+'" target="_blank" style="color:#4F45A8;font-size:11px">🔗 ver</a>':'-')+'</td>'
       +'</tr>';
   });
-  document.getElementById('hist-body').innerHTML=rows;
+  document.getElementById('hist-body').innerHTML = rows;
 }
 
 function clearHist() {
-  var pin=prompt('Contraseña para eliminar el histórico:');
-  if (pin===null) return;
-  if (pin!==getPin()) { toast('Contraseña incorrecta','err'); return; }
+  var pin = prompt('Contraseña para eliminar el histórico:');
+  if (pin === null) return;
+  if (pin !== getPin()) { toast('Contraseña incorrecta','err'); return; }
   if (!confirm('¿Eliminar TODO el histórico? No se puede deshacer.')) return;
-  hist=[]; localStorage.removeItem('icp_h');
+  hist = []; localStorage.removeItem('icp_h');
   renderHist(); toast('Histórico limpio','err');
   logEvt('Histórico eliminado','Por: '+session.names.join(', '));
 }
 
 function expCSV() {
   if (!hist.length) { toast('No hay datos para exportar','err'); return; }
-  var h=['Tema','Etiqueta','ID','Fecha','Período','Timestamp','Cuenta','Analista(s)',
-         '% Neg','% Neut','% Pos','Reproducciones','Interacciones','Menciones',
-         'ICP','Delta ICP','Estado','URL'];
-  var rows=hist.map(function(d){
-    return [d.tema,d.etiq||d.tema,d.id||'',d.fecha,d.hora||'',d.ts||'',d.cuenta,
-            d.analistas||'',((d.neg||0)*100).toFixed(0)+'%',((d.neut||0)*100).toFixed(0)+'%',
-            ((d.pos||0)*100).toFixed(0)+'%',d.repros||0,d.interac||0,d.vol||0,
-            d.icp.toFixed(2),d.delta!=null?d.delta.toFixed(2):'',d.estado||'',d.url||''
-    ].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');
+  var h = ['Tema','Etiqueta','ID','Fecha','Período','Timestamp','Cuenta','Analista(s)',
+           '% Neg','% Neut','% Pos','Reproducciones','Interacciones','Menciones','ICP','Delta ICP','Estado','URL'];
+  var rows = hist.map(function(d) {
+    return [d.tema,d.etiq||d.tema,d.id||'',d.fecha,d.hora||'',d.ts||'',d.cuenta,d.analistas||'',
+      ((d.neg||0)*100).toFixed(0)+'%',((d.neut||0)*100).toFixed(0)+'%',((d.pos||0)*100).toFixed(0)+'%',
+      d.repros||0,d.interac||0,d.vol||0,d.icp.toFixed(2),
+      d.delta!=null?d.delta.toFixed(2):'',d.estado||'',d.url||''
+    ].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
   });
-  var csv=[h.join(',')].concat(rows).join('\n');
-  var a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='icp_historico_'+today()+'.csv'; a.click();
+  var csv = [h.join(',')].concat(rows).join('\n');
+  var a   = document.createElement('a');
+  a.href  = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'icp_historico_'+today()+'.csv';
+  a.click();
   toast('CSV exportado','ok');
-  logEvt('CSV exportado',hist.length+' registros');
+  logEvt('CSV exportado', hist.length+' registros');
 }
 
-// ══ LOG ═══════════════════════════════════════════
+// ── REGISTRO / LOG ───────────────────────────────────────────────
 function logEvt(tipo, detalle) {
-  actLog.push({ts:fmtTs(new Date()), tipo:tipo, detalle:detalle});
-  // only re-render if log tab is active
-  var panel=document.getElementById('panel-log');
-  if (panel&&panel.classList.contains('on')) renderLog();
-  setText('log-count', actLog.length+' evento'+(actLog.length!==1?'s':''));
+  actLog.push({ ts:fmtTs(new Date()), tipo:tipo, detalle:detalle });
+  var panel = document.getElementById('panel-log');
+  if (panel && panel.classList.contains('on')) renderLog();
+  var count = document.getElementById('log-count');
+  if (count) count.textContent = actLog.length+' evento'+(actLog.length!==1?'s':'');
 }
 
 function renderLog() {
-  var empty=document.getElementById('log-empty'), list=document.getElementById('log-list');
-  var count=document.getElementById('log-count');
-  if (!actLog.length) { if(empty)empty.style.display='block'; if(list)list.innerHTML=''; if(count)count.textContent='0 eventos'; return; }
-  if(empty)empty.style.display='none';
-  if(count)count.textContent=actLog.length+' evento'+(actLog.length!==1?'s':'');
-  var ic={'Cálculo ICP':'ti-calculator','Guardado':'ti-device-floppy','Guardado local':'ti-device-floppy',
-          'Delta calculado':'ti-trending-up','Delta guardado':'ti-device-floppy',
-          'Sesión iniciada':'ti-user-check','Imagen descargada':'ti-photo-down',
-          'CSV exportado':'ti-file-spreadsheet','Riesgo Neutro':'ti-alert-triangle',
-          'Config guardada':'ti-settings','Guardado en Sheets':'ti-brand-google','Error Sheets':'ti-wifi-off',
-          'Histórico eliminado':'ti-trash','Contraseña cambiada':'ti-lock'};
-  var cl={'Cálculo ICP':'#4F45A8','Guardado':'#0F7258','Guardado local':'#0F7258',
-          'Delta calculado':'#7B6FD4','Delta guardado':'#0F7258',
-          'Sesión iniciada':'#20A87E','Imagen descargada':'#C2410C',
-          'CSV exportado':'#D97706','Riesgo Neutro':'#D97706',
-          'Config guardada':'#94A3B8','Guardado en Sheets':'#0F7258','Error Sheets':'#DC2626',
-          'Histórico eliminado':'#DC2626','Contraseña cambiada':'#4F45A8'};
-  if(list) list.innerHTML=actLog.slice().reverse().map(function(e,idx){
-    var i=ic[e.tipo]||'ti-point', co=cl[e.tipo]||'#94A3B8';
+  var empty = document.getElementById('log-empty');
+  var list  = document.getElementById('log-list');
+  var count = document.getElementById('log-count');
+  if (!actLog.length) {
+    if (empty) empty.style.display='block';
+    if (list)  list.innerHTML='';
+    if (count) count.textContent='0 eventos';
+    return;
+  }
+  if (empty) empty.style.display='none';
+  if (count) count.textContent = actLog.length+' evento'+(actLog.length!==1?'s':'');
+  var ic = { 'Cálculo ICP':'ti-calculator','Guardado local':'ti-device-floppy','Delta calculado':'ti-trending-up',
+             'Delta guardado':'ti-device-floppy','Sesión iniciada':'ti-user-check','Imagen descargada':'ti-photo-down',
+             'CSV exportado':'ti-file-spreadsheet','Config guardada':'ti-settings','Guardado en Sheets':'ti-brand-google',
+             'Error Sheets':'ti-wifi-off','Histórico eliminado':'ti-trash','Contraseña cambiada':'ti-lock',
+             'CSV topes analizado':'ti-calculator','Topes actualizados':'ti-adjustments-horizontal',
+             'Topes aplicados desde CSV':'ti-adjustments-horizontal' };
+  var cl = { 'Cálculo ICP':'#4F45A8','Guardado local':'#0F7258','Delta calculado':'#7B6FD4',
+             'Delta guardado':'#0F7258','Sesión iniciada':'#20A87E','Imagen descargada':'#C2410C',
+             'CSV exportado':'#D97706','Config guardada':'#94A3B8','Guardado en Sheets':'#0F7258',
+             'Error Sheets':'#DC2626','Histórico eliminado':'#DC2626','Contraseña cambiada':'#4F45A8',
+             'CSV topes analizado':'#4F45A8','Topes actualizados':'#0F7258','Topes aplicados desde CSV':'#0F7258' };
+  if (list) list.innerHTML = actLog.slice().reverse().map(function(e, idx) {
     var realIdx = actLog.length - 1 - idx;
+    var ico = ic[e.tipo] || 'ti-point', col = cl[e.tipo] || '#94A3B8';
     return '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid #E2E8F0">'
-      +'<div style="width:32px;height:32px;border-radius:9px;background:'+co+'18;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
-      +'<i class="ti '+i+'" style="font-size:15px;color:'+co+'"></i></div>'
+      +'<div style="width:32px;height:32px;border-radius:9px;background:'+col+'18;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+      +'<i class="ti '+ico+'" style="font-size:15px;color:'+col+'"></i></div>'
       +'<div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px">'
       +'<span style="font-size:13px;font-weight:600;color:#0F172A">'+e.tipo+'</span>'
       +'<div style="display:flex;align-items:center;gap:8px;flex-shrink:0">'
       +'<span style="font-size:10px;color:#94A3B8;font-family:monospace">'+e.ts+'</span>'
-      +'<button onclick="borrarLogEvt('+realIdx+')" style="background:none;border:1px solid #E2E8F0;color:#94A3B8;cursor:pointer;font-size:11px;padding:2px 7px;border-radius:4px" title="Eliminar este registro">✕</button>'
+      +'<button onclick="borrarLogEvt('+realIdx+')" style="background:none;border:1px solid #E2E8F0;color:#94A3B8;cursor:pointer;font-size:11px;padding:2px 7px;border-radius:4px" title="Eliminar">✕</button>'
       +'</div></div>'
       +'<div style="font-size:12px;color:#475569;margin-top:2px">'+e.detalle+'</div></div></div>';
   }).join('');
-}
-
-function expLog() {
-  if (!actLog.length) { toast('No hay actividad registrada','err'); return; }
-  var h=['Timestamp','Tipo','Detalle'];
-  var rows=actLog.map(function(e){
-    return [e.ts,e.tipo,e.detalle].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');
-  });
-  var csv=[h.join(',')].concat(rows).join('\n');
-  var a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='icp_log_'+today()+'.csv'; a.click();
-  toast('Log exportado','ok');
 }
 
 function borrarLogEvt(realIdx) {
@@ -1445,89 +1579,189 @@ function borrarLogEvt(realIdx) {
   renderLog();
 }
 
-function clearLog() {
-  var pin=prompt('Contraseña para limpiar el registro:');
-  if (pin===null) return;
-  if (pin!==getPin()) { toast('Contraseña incorrecta','err'); return; }
-  actLog=[]; renderLog(); toast('Registro limpio','');
+function expLog() {
+  if (!actLog.length) { toast('No hay actividad registrada','err'); return; }
+  var h    = ['Timestamp','Tipo','Detalle'];
+  var rows = actLog.map(function(e) {
+    return [e.ts,e.tipo,e.detalle].map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(',');
+  });
+  var csv = [h.join(',')].concat(rows).join('\n');
+  var a   = document.createElement('a');
+  a.href  = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'icp_log_'+today()+'.csv';
+  a.click();
+  toast('Log exportado','ok');
 }
 
-// ══ RIESGO NEUTRO ══════════════════════════════════
+function clearLog() {
+  var pin = prompt('Contraseña para limpiar el registro:');
+  if (pin === null) return;
+  if (pin !== getPin()) { toast('Contraseña incorrecta','err'); return; }
+  actLog = []; renderLog(); toast('Registro limpio','');
+}
+
+// ── RIESGO NEUTRO ────────────────────────────────────────────────
 function calcNeutro() {
-  var neut=parseFloat(document.getElementById('n-neut').value)||0;
-  var neg=parseFloat(document.getElementById('n-neg').value)||0;
-  var repNeg=parseFloat(document.getElementById('n-rep-neg').value)||0;
-  var repNeut=parseFloat(document.getElementById('n-rep-neut').value)||0;
-  var tope=parseFloat(document.getElementById('n-tope').value)||5000000;
-  var conv=parseFloat(document.getElementById('n-conv').value)||0;
-  var repTotal=repNeg+repNeut;
-  if (!neut&&!neg&&!repTotal) {
+  var neut   = parseFloat(document.getElementById('n-neut').value)    || 0;
+  var neg    = parseFloat(document.getElementById('n-neg').value)     || 0;
+  var repNeg = parseFloat(document.getElementById('n-rep-neg').value) || 0;
+  var repNt  = parseFloat(document.getElementById('n-rep-neut').value)|| 0;
+  var tope   = parseFloat(document.getElementById('n-tope').value)    || 5000000;
+  var conv   = parseFloat(document.getElementById('n-conv').value)    || 0;
+  var repTot = repNeg + repNt;
+  if (!neut && !neg && !repTot) {
     document.getElementById('neutro-result').classList.add('hidden');
     document.getElementById('neutro-ph').style.display='block'; return;
   }
   document.getElementById('neutro-ph').style.display='none';
   document.getElementById('neutro-result').classList.remove('hidden');
-  // ICP actual: uses neg% and ALL repros (neg+neut) normalized
-  var negD=neg/100;
-  var sR=Math.min(repTotal/tope,1)*100;
-  var icpAct=Math.round(((negD*100*.45)+(sR*.30))*100)/100;
-  // ICP si el neutral% se convierte parcialmente en negativo
-  // AND las repros neutrales se cuentan como negativas
-  var convFrac=conv/100;
-  var negConv=Math.min(negD+(neut/100)*convFrac,1);
-  var repNegConv=repNeg+(repNeut*convFrac); // repros neutrales que se vuelven negativas
-  var sRConv=Math.min(repNegConv/tope,1)*100; // solo repros ahora negativas
-  var icpConv=Math.round(((negConv*100*.45)+(sRConv*.30))*100)/100;
-  var delta=Math.round((icpConv-icpAct)*100)/100;
-  var zA=getZona(icpAct), zC=getZona(icpConv);
-  setText('n-icp-act',icpAct.toFixed(1)+' pts'); document.getElementById('n-icp-act').style.color=zA.col;
-  setText('n-est-act',zA.e); document.getElementById('n-est-act').style.color=zA.col;
-  setText('n-icp-conv',icpConv.toFixed(1)+' pts'); document.getElementById('n-icp-conv').style.color=zC.col;
-  setText('n-est-conv',zC.e); document.getElementById('n-est-conv').style.color=zC.col;
-  setText('n-delta',(delta>=0?'+':'')+delta.toFixed(1));
-  document.getElementById('n-delta').style.color=delta>=20?'#991B1B':delta>0?'#C2410C':'#15803D';
-  document.getElementById('n-bar-act').style.width=Math.min(icpAct,100)+'%';
-  document.getElementById('n-bar-act').style.background=zA.col;
-  document.getElementById('n-bar-conv').style.width=Math.min(icpConv,100)+'%';
-  document.getElementById('n-bar-conv').style.background=zC.col;
-  var al=document.getElementById('n-alerta'), msg, bg, bc, tc;
-  if (icpConv>=76)      { msg='🚨 <strong>FUEGO — Crisis Total</strong>: Si el '+conv+'% neutral detona, el ICP llegaría a <strong>'+icpConv.toFixed(1)+' pts</strong>. Actuar preventivamente ahora.'; bg='#FEF2F2';bc='#FECACA';tc='#991B1B'; }
+  var negD    = neg / 100;
+  var sR      = Math.min(repTot / tope, 1) * 100;
+  var icpAct  = Math.round(((negD*100*.45)+(sR*.30))*100)/100;
+  var convF   = conv / 100;
+  var negConv = Math.min(negD+(neut/100)*convF, 1);
+  var repNegConv = repNeg + repNt*convF;
+  var sRConv  = Math.min(repNegConv / tope, 1) * 100;
+  var icpConv = Math.round(((negConv*100*.45)+(sRConv*.30))*100)/100;
+  var delta   = Math.round((icpConv-icpAct)*100)/100;
+  var zA = getZona(icpAct), zC = getZona(icpConv);
+  setText('n-icp-act',  icpAct.toFixed(1)+' pts');  document.getElementById('n-icp-act').style.color  = zA.col;
+  setText('n-est-act',  zA.e);                       document.getElementById('n-est-act').style.color  = zA.col;
+  setText('n-icp-conv', icpConv.toFixed(1)+' pts'); document.getElementById('n-icp-conv').style.color = zC.col;
+  setText('n-est-conv', zC.e);                       document.getElementById('n-est-conv').style.color = zC.col;
+  setText('n-delta', (delta>=0?'+':'')+delta.toFixed(1));
+  document.getElementById('n-delta').style.color = delta>=20?'#991B1B':delta>0?'#C2410C':'#15803D';
+  document.getElementById('n-bar-act').style.width      = Math.min(icpAct,100)+'%';
+  document.getElementById('n-bar-act').style.background = zA.col;
+  document.getElementById('n-bar-conv').style.width     = Math.min(icpConv,100)+'%';
+  document.getElementById('n-bar-conv').style.background= zC.col;
+  var al = document.getElementById('n-alerta'), msg, bg, bc, tc;
+  if (icpConv>=76)      { msg='🚨 <strong>FUEGO — Crisis Total</strong>: Si el '+conv+'% neutral detona, ICP llegaría a <strong>'+icpConv.toFixed(1)+' pts</strong>. Actuar preventivamente ahora.'; bg='#FEF2F2';bc='#FECACA';tc='#991B1B'; }
   else if (icpConv>=51) { msg='⚠️ <strong>CALIENTE — Riesgo Alto</strong>: Con '+conv+'% de conversión, ICP subiría a <strong>'+icpConv.toFixed(1)+' pts</strong>. Se recomienda respuesta preventiva.'; bg='#FFF7ED';bc='#FED7AA';tc='#C2410C'; }
-  else if (icpConv>=26) { msg='🟡 <strong>TIBIO — Riesgo Localizado</strong>: Con '+conv+'% de conversión, ICP llegaría a <strong>'+icpConv.toFixed(1)+' pts</strong>. Monitoreo activo recomendado.'; bg='#FFFBEB';bc='#FDE68A';tc='#D97706'; }
-  else                  { msg='✅ Sin riesgo crítico: Incluso con '+conv+'% de conversión, el ICP se mantiene en <strong>'+icpConv.toFixed(1)+' pts</strong>. Tema bajo control.'; bg='#E8F8F4';bc='#B8EAD9';tc='#0F7258'; }
-  al.style.cssText='padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.7;border:1.5px solid;background:'+bg+';border-color:'+bc+';color:'+tc;
-  al.innerHTML=msg;
+  else if (icpConv>=26) { msg='🟡 <strong>TIBIO — Riesgo Localizado</strong>: Con '+conv+'% de conversión, ICP llegaría a <strong>'+icpConv.toFixed(1)+' pts</strong>. Monitoreo activo.'; bg='#FFFBEB';bc='#FDE68A';tc='#D97706'; }
+  else                  { msg='✅ Sin riesgo crítico: Incluso con '+conv+'% de conversión, ICP se mantiene en <strong>'+icpConv.toFixed(1)+' pts</strong>. Tema bajo control.'; bg='#E8F8F4';bc='#B8EAD9';tc='#0F7258'; }
+  al.style.cssText = 'padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.7;border:1.5px solid;background:'+bg+';border-color:'+bc+';color:'+tc;
+  al.innerHTML = msg;
 }
+function updConv(v) { setText('conv-val', v+'%'); calcNeutro(); }
 
-function updConv(v) {
-  setText('conv-val', v+'%'); calcNeutro();
-}
-
-// ══ IMAGEN / DESCARGA ══════════════════════════════
+// ── IMAGEN / DESCARGA ────────────────────────────────────────────
 function dlImg(elId, tipo) {
-  var el=document.getElementById(elId);
-  if (!el||el.classList.contains('hidden')) { toast('Primero genera el resultado','err'); return; }
+  var el = document.getElementById(elId);
+  if (!el || el.classList.contains('hidden')) { toast('Primero genera el resultado','err'); return; }
   toast('Generando imagen JPG…','');
-  html2canvas(el,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false}).then(function(canvas){
-    canvas.toBlob(function(blob){
-      var a=document.createElement('a');
-      var nom=tipo==='delta'?(gv('d-tema')||'delta'):(lastR&&lastR.tema||'resultado');
-      a.href=URL.createObjectURL(blob);
-      a.download='ICP_'+tipo+'_'+nom.replace(/\s+/g,'-')+'_'+today()+'.jpg';
-      a.click(); toast('Imagen JPG descargada','ok');
+  html2canvas(el, {backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false}).then(function(canvas) {
+    canvas.toBlob(function(blob) {
+      var a   = document.createElement('a');
+      var nom = tipo==='delta'?(gv('d-tema')||'delta'):(lastR&&lastR.tema||'resultado');
+      a.href     = URL.createObjectURL(blob);
+      a.download = 'ICP_'+tipo+'_'+nom.replace(/\s+/g,'-')+'_'+today()+'.jpg';
+      a.click();
+      toast('Imagen JPG descargada','ok');
       logEvt('Imagen descargada','Tipo: '+tipo+(lastR?' · '+lastR.tema:''));
-    },'image/jpeg',0.93);
-  }).catch(function(){ toast('Error al generar imagen','err'); });
+    }, 'image/jpeg', 0.93);
+  }).catch(function() { toast('Error al generar imagen','err'); });
 }
 
 function copiarTexto() {
   if (!lastR) return;
-  var recs=getRecs(lastR.icp,lastR.sN,lastR.sR);
-  var txt='TERMÓMETRO ICP — '+lastR.etiq+'\nCuenta: '+lastR.cuenta+' · '+lastR.fecha+' · '+lastR.hora+'\nAnalista(s): '+lastR.analistas+' · '+lastR.ts+'\n\nICP: '+lastR.icp.toFixed(2)+' pts — '+lastR.zona.e+' ('+lastR.zona.s+')\n\n1. '+recs[0]+'\n2. '+recs[1]+'\n3. '+recs[2]+'\n\n— Célula Yucatán / AO';
-  navigator.clipboard.writeText(txt).then(function(){toast('Copiado al portapapeles','ok');});
+  var recs = getRecs(lastR.icp, lastR.sN, lastR.sR);
+  var txt  = 'TERMÓMETRO ICP — '+lastR.etiq+'\n'
+    +'Cuenta: '+lastR.cuenta+' · '+lastR.fecha+' · '+lastR.hora+'\n'
+    +'Analista(s): '+lastR.analistas+' · '+lastR.ts+'\n\n'
+    +'ICP: '+lastR.icp.toFixed(2)+' pts — '+lastR.zona.e+' ('+lastR.zona.s+')\n\n'
+    +'1. '+recs[0]+'\n2. '+recs[1]+'\n3. '+recs[2]+'\n\n— Célula Yucatán / AO';
+  navigator.clipboard.writeText(txt).then(function(){ toast('Copiado al portapapeles','ok'); });
 }
 
-// ══ REMINDER / EXPORT ══════════════════════════════
+function limpiar() {
+  ['f-id','f-tema','f-url','f-neg','f-neut','f-pos','f-rn','f-rnt','f-rp',
+   'f-lk','f-sh','f-cm','f-vol','f-per-fi','f-per-hi','f-per-ff','f-per-hf','f-hora'].forEach(function(id){ sv(id,''); });
+  document.getElementById('f-cuenta').value = '';
+  document.getElementById('f-esact').value  = 'no';
+  document.getElementById('corte-num-wrap').style.display = 'none';
+  sv('f-fecha', today());
+  sv('f-per-fi', today());
+  setText('sum-v','—'); document.getElementById('sum-v').className='pill-val neu';
+  setText('tot-r','0'); setText('tot-i','0');
+  var prev = document.getElementById('periodo-preview'); if (prev) prev.textContent='';
+  lastR = null; toast('Formulario limpio','');
+  ['warn-repros','warn-interac','warn-vol'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.style.display='none';
+  });
+  // Reset topes to account defaults
+  sv('f-tr', cfg.topes.r); sv('f-ti', cfg.topes.i); sv('f-tv', cfg.topes.v);
+}
+
+// ── GOOGLE SHEETS ────────────────────────────────────────────────
+function enviarASheets(entry, imgBase64) {
+  if (!SHEETS_URL) return;
+  var payload = {
+    fecha:     entry.fecha     || '',
+    hora:      entry.hora      || '',
+    ts:        entry.ts        || '',
+    id:        entry.id        || '',
+    tema:      entry.tema      || '',
+    etiq:      entry.etiq      || entry.tema || '',
+    cuenta:    entry.cuenta    || '',
+    analistas: entry.analistas || '',
+    neg:       ((entry.neg||0)*100).toFixed(0)+'%',
+    neut:      ((entry.neut||0)*100).toFixed(0)+'%',
+    pos:       ((entry.pos||0)*100).toFixed(0)+'%',
+    repros:    entry.repros    || 0,
+    interac:   entry.interac   || 0,
+    vol:       entry.vol       || 0,
+    icp:       entry.icp       || 0,
+    delta:     entry.delta != null ? entry.delta : '',
+    estado:    entry.estado    || '',
+    url:       entry.url       || '',
+    esCorte:   entry.esCorte   || false,
+    imgBase64: imgBase64       || ''
+  };
+  var json = JSON.stringify(payload);
+  // Intenta fetch; si falla usa form oculto (funciona desde file://)
+  try {
+    fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:json })
+      .then(function() {
+        toast('Guardado en Google Sheets','ok');
+        logEvt('Guardado en Sheets','Tema: '+payload.tema+' · '+payload.cuenta);
+      })
+      .catch(function() { enviarViaForm(json); });
+  } catch(e) { enviarViaForm(json); }
+}
+
+function enviarViaForm(json) {
+  try {
+    var nm  = 'sf'+Date.now();
+    var ifr = document.createElement('iframe');
+    ifr.name = nm; ifr.style.display = 'none';
+    document.body.appendChild(ifr);
+    var frm = document.createElement('form');
+    frm.method = 'POST'; frm.action = SHEETS_URL; frm.target = nm; frm.style.display = 'none';
+    var inp = document.createElement('input');
+    inp.type  = 'hidden'; inp.name = 'data'; inp.value = json;
+    frm.appendChild(inp);
+    document.body.appendChild(frm);
+    frm.submit();
+    setTimeout(function(){ try{document.body.removeChild(frm);document.body.removeChild(ifr);}catch(e){} }, 5000);
+    toast('Guardado en Google Sheets','ok');
+    logEvt('Guardado en Sheets','Enviado vía formulario');
+  } catch(err) {
+    toast('Sin conexión — guardado solo local','err');
+    logEvt('Error Sheets', String(err));
+  }
+}
+
+function checkSheetsConnection() {
+  var el = document.getElementById('sheets-status');
+  if (!el) return;
+  el.textContent = '🔄 Sheets';
+  fetch(SHEETS_URL, {method:'GET', mode:'no-cors'})
+    .then(function(){ el.textContent='🟢 Sheets'; })
+    .catch(function(){ el.textContent='🔴 Sheets'; });
+}
+
+// ── REMINDER ─────────────────────────────────────────────────────
 function showExportReminder(count) {
   setText('reminder-count', count);
   document.getElementById('reminder-overlay').style.display='flex';
@@ -1535,165 +1769,24 @@ function showExportReminder(count) {
 function closeReminder() {
   document.getElementById('reminder-overlay').style.display='none';
 }
-document.getElementById('reminder-overlay').addEventListener('click',function(e){
-  if(e.target===this) closeReminder();
-});
 
-// ══ HELPERS ════════════════════════════════════════
-function pf(id){ var el=document.getElementById(id); return el?parseFloat(el.value)||0:0; }
-function gv(id){ var el=document.getElementById(id); return el?el.value:''; }
-function sv(id,v){ var el=document.getElementById(id); if(el)el.value=v; }
-function sv_get(id){ var el=document.getElementById(id); return el?el.value:''; }
+// ── HELPERS ──────────────────────────────────────────────────────
+function pf(id)      { var el=document.getElementById(id); return el?parseFloat(el.value)||0:0; }
+function gv(id)      { var el=document.getElementById(id); return el?el.value:''; }
+function sv(id,v)    { var el=document.getElementById(id); if(el)el.value=v; }
+function sv_get(id)  { var el=document.getElementById(id); return el?el.value:''; }
 function setText(id,v){ var el=document.getElementById(id); if(el)el.textContent=v; }
-function fmt(n){ if(!n||n===0)return'0'; return Number(n).toLocaleString('es-MX'); }
-function today(){ return new Date().toISOString().slice(0,10); }
-function fmtTs(d){ var p=function(n){return String(n).padStart(2,'0');};
-  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
-function toast(msg,type){
+function fmt(n)      { if(!n||n===0)return'0'; return Number(n).toLocaleString('es-MX'); }
+function today()     { return new Date().toISOString().slice(0,10); }
+function fmtTs(d)    {
+  var p=function(n){return String(n).padStart(2,'0');};
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+}
+function toast(msg,type) {
   var el=document.getElementById('toast');
   el.textContent=msg; el.className='toast '+(type||'');
-  el.classList.add('show'); setTimeout(function(){el.classList.remove('show');},3200);
+  el.classList.add('show'); setTimeout(function(){ el.classList.remove('show'); },3200);
 }
-
-// Init reminder
-document.getElementById("reminder-overlay").addEventListener("click",function(e){if(e.target===this)closeReminder();});
-
-// ══ TOPES POR CUENTA ════════════════════════════════
-function getTopesForCuenta(cuenta) {
-  if (!cuenta) return {r: cfg.topes.r, i: cfg.topes.i, v: cfg.topes.v};
-  var key = 'topes_' + cuenta;
-  var saved = cfg.topesPorCuenta && cfg.topesPorCuenta[key];
-  return saved || {r: cfg.topes.r, i: cfg.topes.i, v: cfg.topes.v};
-}
-
-function loadTopesForCuenta() {
-  var cuenta = document.getElementById('cfg-cuenta-sel').value;
-  var empty  = document.getElementById('topes-empty-msg');
-  var panel  = document.getElementById('topes-por-cuenta');
-  if (!cuenta) {
-    empty.style.display = 'block'; panel.style.display = 'none'; return;
-  }
-  empty.style.display = 'none'; panel.style.display = 'block';
-  var t = getTopesForCuenta(cuenta);
-  sv('cfg-tr', t.r); sv('cfg-ti', t.i); sv('cfg-tv', t.v);
-}
-
-function guardarTopesCuenta() {
-  var cuenta = document.getElementById('cfg-cuenta-sel').value;
-  if (!cuenta) { toast('Selecciona una cuenta primero', 'err'); return; }
-  if (!cfg.topesPorCuenta) cfg.topesPorCuenta = {};
-  var key = 'topes_' + cuenta;
-  cfg.topesPorCuenta[key] = {
-    r: parseFloat(sv_get('cfg-tr')) || 5000000,
-    i: parseFloat(sv_get('cfg-ti')) || 20000,
-    v: parseFloat(sv_get('cfg-tv')) || 50000
-  };
-  localStorage.setItem('icp_cfg', JSON.stringify(cfg));
-  // Update display in captura if this is the selected account
-  var cuentaActual = document.getElementById('f-cuenta') ? document.getElementById('f-cuenta').value : '';
-  if (cuentaActual === cuenta) aplicarTopesDisplay(cuenta);
-  toast('Topes guardados para ' + cuenta, 'ok');
-  logEvt('Topes actualizados', 'Cuenta: ' + cuenta + ' · R=' + cfg.topesPorCuenta[key].r + ' I=' + cfg.topesPorCuenta[key].i + ' V=' + cfg.topesPorCuenta[key].v);
-}
-
-function aplicarTopesDisplay(cuenta) {
-  var t = getTopesForCuenta(cuenta);
-  sv('f-tr', t.r); sv('f-ti', t.i); sv('f-tv', t.v);
-  var dispR = document.getElementById('disp-tr');
-  var dispI = document.getElementById('disp-ti');
-  var dispV = document.getElementById('disp-tv');
-  if (dispR) dispR.textContent = fmt(t.r);
-  if (dispI) dispI.textContent = fmt(t.i);
-  if (dispV) dispV.textContent = fmt(t.v);
-}
-
-// Update topes when account changes in captura
-var origFCuenta = document.getElementById('f-cuenta');
-if (origFCuenta) {
-  origFCuenta.addEventListener('change', function() {
-    aplicarTopesDisplay(this.value);
-    logPreview();
-  });
-}
-
-// ══ VALIDACIÓN DE TOPES ═════════════════════════════
-function validarTopes() {
-  var tR = pf('f-tr') || 5000000;
-  var tI = pf('f-ti') || 20000;
-  var tV = pf('f-tv') || 50000;
-  var errores = [];
-  var repros  = (pf('f-rn') || 0) + (pf('f-rnt') || 0) + (pf('f-rp') || 0);
-  var interac = (pf('f-lk') || 0) + (pf('f-sh') || 0) + (pf('f-cm') || 0);
-  var vol     = pf('f-vol') || 0;
-  if (repros > tR)  errores.push('Reproducciones (' + fmt(repros) + ') exceden el tope (' + fmt(tR) + '). Ajusta el tope en Configuración o corrige el valor.');
-  if (interac > tI) errores.push('Interacciones (' + fmt(interac) + ') exceden el tope (' + fmt(tI) + '). Ajusta el tope en Configuración o corrige el valor.');
-  if (vol > tV)     errores.push('Menciones (' + fmt(vol) + ') exceden el tope (' + fmt(tV) + '). Ajusta el tope en Configuración o corrige el valor.');
-  return errores;
-}
-
-function validarTopesDelta(negTotal, repTotal) {
-  var tR = pf('f-tr') || 5000000;
-  var errores = [];
-  if (repTotal > tR) errores.push('Reproducciones en este corte (' + fmt(repTotal) + ') exceden el tope (' + fmt(tR) + '). Revisa los valores o ajusta el tope en Configuración.');
-  if (negTotal > 100) errores.push('% Negativo (' + negTotal.toFixed(0) + '%) no puede superar 100%. Corrige el valor.');
-  return errores;
-}
-
-// Override calcICP to validate before calculating
-var _calcICPOrig = calcICP;
-calcICP = function() {
-  var errores = validarTopes();
-  if (errores.length > 0) {
-    toast('⚠️ ' + errores[0], 'err');
-    // Show detailed alert
-    // Show additional errors via toast
-    errores.slice(1).forEach(function(e,i){ setTimeout(function(){ toast(e,'err'); },(i+1)*900); });
-
-
-
-
-
-    return;
-  }
-  _calcICPOrig();
-};
-
-// Override calcDelta to validate each corte
-var _calcDeltaOrig = calcDelta;
-calcDelta = function() {
-  var cortes = document.querySelectorAll('#cortes-list .cb');
-  var erroresGlobal = [];
-  cortes.forEach(function(row, i) {
-    var neg = parseFloat(row.querySelector('.cn').value) || 0;
-    var rn  = parseFloat(row.querySelector('.crn').value) || 0;
-    var rnt = parseFloat(row.querySelector('.crnt').value) || 0;
-    var rep = rn + rnt;
-    var errs = validarTopesDelta(neg, rep);
-    errs.forEach(function(e) { erroresGlobal.push('Corte ' + (i+1) + ': ' + e); });
-  });
-  if (erroresGlobal.length > 0) {
-    toast('⚠️ Revisa los valores del Delta', 'err');
-    erroresGlobal.slice(1).forEach(function(e,i){ setTimeout(function(){ toast(e,'err'); },(i+1)*900); });
-
-
-
-
-    return;
-  }
-  _calcDeltaOrig();
-};
-
-// Update cfg-cuenta-sel in config when accounts change
-var _saveCfgOrig = saveCfg;
-saveCfg = function() {
-  _saveCfgOrig();
-  var sel = document.getElementById('cfg-cuenta-sel');
-  if (sel) {
-    sel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
-    cfg.cuentas.forEach(function(c) { sel.innerHTML += '<option>' + c + '</option>'; });
-  }
-};
-
 </script>
 </body>
 </html>
