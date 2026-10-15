@@ -384,9 +384,9 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
           </div>
         </div>
         <div class="db" style="margin-bottom:10px"><div class="db-ttl">Desglose ICP Final</div>
-          <div class="comp-r"><span class="comp-nm">🔥 Negatividad (45%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-neg" style="background:#DC2626"></div></div><span class="comp-sc" id="dt-cv-neg" style="color:#DC2626">—</span><span class="comp-imp" id="dt-ci-neg">—</span></div>
-          <div class="comp-r"><span class="comp-nm">📺 Reproducciones (30%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-rep" style="background:#7C3AED"></div></div><span class="comp-sc" id="dt-cv-rep" style="color:#7C3AED">—</span><span class="comp-imp" id="dt-ci-rep">—</span></div>
-          <div class="comp-r"><span class="comp-nm">⚡ Interacciones (15%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-int" style="background:#1D4ED8"></div></div><span class="comp-sc" id="dt-cv-int" style="color:#1D4ED8">—</span><span class="comp-imp" id="dt-ci-int">—</span></div>
+          <div class="comp-r"><span class="comp-nm" id="lbl-neg">🔥 Negatividad (45%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-neg" style="background:#DC2626"></div></div><span class="comp-sc" id="dt-cv-neg" style="color:#DC2626">—</span><span class="comp-imp" id="dt-ci-neg">—</span></div>
+          <div class="comp-r"><span class="comp-nm" id="lbl-rep">📺 Reproducciones (30%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-rep" style="background:#7C3AED"></div></div><span class="comp-sc" id="dt-cv-rep" style="color:#7C3AED">—</span><span class="comp-imp" id="dt-ci-rep">—</span></div>
+          <div class="comp-r"><span class="comp-nm" id="lbl-int">⚡ Interacciones (15%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-int" style="background:#1D4ED8"></div></div><span class="comp-sc" id="dt-cv-int" style="color:#1D4ED8">—</span><span class="comp-imp" id="dt-ci-int">—</span></div>
           <div class="comp-r"><span class="comp-nm">📢 Menciones (10%)</span><div class="comp-bg"><div class="comp-fill" id="dt-bar-vol" style="background:#15803D"></div></div><span class="comp-sc" id="dt-cv-vol" style="color:#15803D">—</span><span class="comp-imp" id="dt-ci-vol">—</span></div>
         </div>
         <div class="db"><div class="db-ttl">Incrementos vs Medición Base</div>
@@ -466,11 +466,11 @@ code{background:#F1F5F9;border:1px solid #E2E8F0;padding:1px 5px;border-radius:4
         </div>
       </div>
       <div class="comp-sec">
-        <div class="comp-hdr">Desglose de Componentes</div>
-        <div class="comp-r"><span class="comp-nm">🔥 Negatividad (45%)</span><div class="comp-bg"><div class="comp-fill" id="b-neg" style="background:#DC2626"></div></div><span class="comp-sc" id="cv-neg" style="color:#DC2626">—</span><span class="comp-imp" id="ci-neg">—</span></div>
-        <div class="comp-r"><span class="comp-nm">📺 Reproducciones (30%)</span><div class="comp-bg"><div class="comp-fill" id="b-rep" style="background:#7C3AED"></div></div><span class="comp-sc" id="cv-rep" style="color:#7C3AED">—</span><span class="comp-imp" id="ci-rep">—</span></div>
-        <div class="comp-r"><span class="comp-nm">⚡ Interacciones (15%)</span><div class="comp-bg"><div class="comp-fill" id="b-int" style="background:#1D4ED8"></div></div><span class="comp-sc" id="cv-int" style="color:#1D4ED8">—</span><span class="comp-imp" id="ci-int">—</span></div>
-        <div class="comp-r"><span class="comp-nm">📢 Vol. Menciones (10%)</span><div class="comp-bg"><div class="comp-fill" id="b-vol" style="background:#15803D"></div></div><span class="comp-sc" id="cv-vol" style="color:#15803D">—</span><span class="comp-imp" id="ci-vol">—</span></div>
+        <div class="comp-hdr" id="r-comp-hdr">Desglose de Componentes</div>
+        <div class="comp-r"><span class="comp-nm" id="lbl-neg">🔥 Negatividad (45%)</span><div class="comp-bg"><div class="comp-fill" id="b-neg" style="background:#DC2626"></div></div><span class="comp-sc" id="cv-neg" style="color:#DC2626">—</span><span class="comp-imp" id="ci-neg">—</span></div>
+        <div class="comp-r"><span class="comp-nm" id="lbl-rep">📺 Reproducciones (30%)</span><div class="comp-bg"><div class="comp-fill" id="b-rep" style="background:#7C3AED"></div></div><span class="comp-sc" id="cv-rep" style="color:#7C3AED">—</span><span class="comp-imp" id="ci-rep">—</span></div>
+        <div class="comp-r"><span class="comp-nm" id="lbl-int">⚡ Interacciones (15%)</span><div class="comp-bg"><div class="comp-fill" id="b-int" style="background:#1D4ED8"></div></div><span class="comp-sc" id="cv-int" style="color:#1D4ED8">—</span><span class="comp-imp" id="ci-int">—</span></div>
+        <div class="comp-r"><span class="comp-nm" id="lbl-vol">📢 Vol. Menciones (10%)</span><div class="comp-bg"><div class="comp-fill" id="b-vol" style="background:#15803D"></div></div><span class="comp-sc" id="cv-vol" style="color:#15803D">—</span><span class="comp-imp" id="ci-vol">—</span></div>
       </div>
       <div class="dg">
         <div class="db"><div class="db-ttl">Sentimiento</div>
@@ -654,6 +654,34 @@ Gobierno Yucatan</textarea></div>
     </div>
     <button class="btn btn-p" style="margin-top:8px;flex:0;padding:10px 20px;font-size:13px" onclick="saveCfg()"><i class="ti ti-device-floppy"></i> Guardar configuración</button>
   </div>
+  <div class="cc" style="border:1.5px solid var(--pu100)">
+    <div class="sl"><div class="ic" style="background:linear-gradient(135deg,var(--pu600),var(--te400))"><i class="ti ti-chart-pie"></i></div>Pesos de la Fórmula ICP por Cuenta</div>
+    <p style="font-size:12px;color:var(--sl600);margin-bottom:16px;line-height:1.7">
+      Ajusta cuánto pesa cada componente en el cálculo del ICP para cada cuenta. Los cuatro valores deben sumar <strong>100%</strong>.
+    </p>
+    <div class="f b" style="margin-bottom:16px">
+      <label>Cuenta a configurar</label>
+      <select id="cfg-pesos-sel" onchange="loadPesosForCuenta()"><option value="">— Selecciona una cuenta —</option></select>
+    </div>
+    <div id="pesos-por-cuenta" style="display:none">
+      <div class="cg">
+        <div class="f y"><label>🔥 Negatividad</label><input id="cfg-p-neg" type="number" min="0" max="100" value="45" oninput="updPesosSum()"><span class="hint">Default: 45%</span></div>
+        <div class="f y"><label>📺 Reproducciones</label><input id="cfg-p-rep" type="number" min="0" max="100" value="30" oninput="updPesosSum()"><span class="hint">Default: 30%</span></div>
+        <div class="f y"><label>⚡ Interacciones</label><input id="cfg-p-int" type="number" min="0" max="100" value="15" oninput="updPesosSum()"><span class="hint">Default: 15%</span></div>
+        <div class="f y"><label>📢 Menciones</label><input id="cfg-p-vol" type="number" min="0" max="100" value="10" oninput="updPesosSum()"><span class="hint">Default: 10%</span></div>
+      </div>
+      <div id="pesos-sum-warn" style="display:none;background:#FEF2F2;border:1.5px solid #FECACA;border-radius:9px;padding:10px 14px;margin:12px 0;font-size:12px;color:#991B1B">
+        <i class="ti ti-alert-triangle" style="vertical-align:-2px;margin-right:6px"></i>
+        <span id="pesos-sum-txt">Los pesos deben sumar exactamente 100%.</span>
+      </div>
+      <div id="pesos-sum-ok" style="display:none;background:#E8F8F4;border:1.5px solid #B8EAD9;border-radius:9px;padding:10px 14px;margin:12px 0;font-size:12px;color:#0F7258">
+        <i class="ti ti-check" style="vertical-align:-2px;margin-right:6px"></i>Los pesos suman 100% ✓
+      </div>
+      <button class="btn btn-p" style="margin-top:4px;flex:0;padding:10px 20px;font-size:13px" onclick="guardarPesosCuenta()"><i class="ti ti-device-floppy"></i> Guardar pesos para esta cuenta</button>
+    </div>
+    <div id="pesos-empty-msg" style="padding:14px;background:var(--sl50);border-radius:9px;font-size:12px;color:var(--sl400);text-align:center">Selecciona una cuenta para ver y editar sus pesos</div>
+  </div>
+
   <div class="cc" style="border:1.5px solid #DDD9F7">
     <div class="sl"><div class="ic" style="background:linear-gradient(135deg,var(--pu600),var(--pu400))"><i class="ti ti-lock"></i></div>Contraseña para borrar datos</div>
     <p style="font-size:12px;color:var(--sl600);margin-bottom:14px">Se solicita al limpiar el Histórico o el Registro. Default: <code>1923</code></p>
@@ -690,7 +718,7 @@ Gobierno Yucatan</textarea></div>
 // ═══════════════════════════════════════════════════════════════════
 
 // ── CONSTANTES Y ESTADO GLOBAL ───────────────────────────────────
-var SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbzz2vn87BvVKnVkfC8h5St-0U7HChWJrUOHL2fV8bZZw3-8zXlzfIadz4aOSus1uYc/exec';
+var SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbz-1MHGZCqiCdMzvOtAbdl0VfSBdHOh5jV6vrJ-aBlvoTY7-DNwRl3Fz9CEHqM9D3cbVQ/exec';
 var hist        = JSON.parse(localStorage.getItem('icp_h') || '[]');
 var session     = { names: [], ts: '' };
 var lastR       = null;   // último resultado ICP calculado
@@ -797,11 +825,17 @@ function applyCfg() {
   sel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
   cfg.cuentas.forEach(function(c) { sel.innerHTML += '<option>' + c + '</option>'; });
 
-  // Selector de cuenta en Config
+  // Selector de cuenta en Config (topes)
   var cfgSel = document.getElementById('cfg-cuenta-sel');
   if (cfgSel) {
     cfgSel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
     cfg.cuentas.forEach(function(c) { cfgSel.innerHTML += '<option>' + c + '</option>'; });
+  }
+  // Selector de cuenta en Config (pesos)
+  var pesosSel = document.getElementById('cfg-pesos-sel');
+  if (pesosSel) {
+    pesosSel.innerHTML = '<option value="">— Selecciona una cuenta —</option>';
+    cfg.cuentas.forEach(function(c) { pesosSel.innerHTML += '<option>' + c + '</option>'; });
   }
 
   // Topes default en Captura
@@ -1111,13 +1145,24 @@ function getZona(icp) {
   if (icp <= 75) return { e:'CALIENTE', s:'Riesgo Alto',       col:'#C2410C', bg:'#FFF7ED', zk:'c' };
   return               { e:'FUEGO',    s:'Crisis Total',       col:'#991B1B', bg:'#FEF2F2', zk:'f' };
 }
-function doCalc(neg, repros, interac, vol, tR, tI, tV) {
+function getPesosForCuenta(cuenta) {
+  if (!cuenta) return { neg:0.45, rep:0.30, int:0.15, vol:0.10 };
+  var key = 'pesos_' + cuenta;
+  if (cfg.pesosPorCuenta && cfg.pesosPorCuenta[key]) {
+    var p = cfg.pesosPorCuenta[key];
+    return { neg:p.neg/100, rep:p.rep/100, int:p.int/100, vol:p.vol/100 };
+  }
+  return { neg:0.45, rep:0.30, int:0.15, vol:0.10 };
+}
+
+function doCalc(neg, repros, interac, vol, tR, tI, tV, pesos) {
+  var p  = pesos || { neg:0.45, rep:0.30, int:0.15, vol:0.10 };
   var sN = neg * 100;
   var sR = Math.min(repros  / tR, 1) * 100;
   var sI = Math.min(interac / tI, 1) * 100;
   var sV = Math.min(vol     / tV, 1) * 100;
-  var icp = Math.round(((sN*.45)+(sR*.30)+(sI*.15)+(sV*.10))*100)/100;
-  return { icp:icp, sN:sN, sR:sR, sI:sI, sV:sV };
+  var icp = Math.round(((sN*p.neg)+(sR*p.rep)+(sI*p.int)+(sV*p.vol))*100)/100;
+  return { icp:icp, sN:sN, sR:sR, sI:sI, sV:sV, pesos:p };
 }
 
 function validarTopes() {
@@ -1146,7 +1191,8 @@ function calcICP() {
   var tR=pf('f-tr')||cfg.topes.r, tI=pf('f-ti')||cfg.topes.i, tV=pf('f-tv')||cfg.topes.v;
   if (!neg && !(rn+rnt+rp)) { toast('Ingresa al menos % Negativo y Reproducciones','err'); return; }
   var repros=rn+rnt+rp, interac=lk+sh+cm;
-  var res = doCalc(neg, repros, interac, vol, tR, tI, tV);
+  var pesos = getPesosForCuenta(document.getElementById('f-cuenta').value);
+  var res = doCalc(neg, repros, interac, vol, tR, tI, tV, pesos);
   var z   = getZona(res.icp);
   var now = new Date();
   var esAct   = document.getElementById('f-esact').value === 'si';
@@ -1204,7 +1250,13 @@ function renderRes(d) {
   var p = pr[d.zona.zk], pel = document.getElementById('r-proto');
   pel.style.cssText = 'background:'+p.bg+';border-color:'+p.bc+';color:'+p.tc;
   pel.textContent   = 'Protocolo: '+p.msg;
-  [['neg',d.sN,d.sN*.45],['rep',d.sR,d.sR*.30],['int',d.sI,d.sI*.15],['vol',d.sV,d.sV*.10]].forEach(function(x) {
+  var rp = (d.pesos || getPesosForCuenta(d.cuenta || ''));
+  // Update component labels with actual pesos
+  setText('lbl-neg', '🔥 Negatividad ('+(rp.neg*100).toFixed(0)+'%)');
+  setText('lbl-rep', '📺 Reproducciones ('+(rp.rep*100).toFixed(0)+'%)');
+  setText('lbl-int', '⚡ Interacciones ('+(rp.int*100).toFixed(0)+'%)');
+  setText('lbl-vol', '📢 Vol. Menciones ('+(rp.vol*100).toFixed(0)+'%)');
+  [['neg',d.sN,d.sN*rp.neg],['rep',d.sR,d.sR*rp.rep],['int',d.sI,d.sI*rp.int],['vol',d.sV,d.sV*rp.vol]].forEach(function(x) {
     document.getElementById('b-'+x[0]).style.width = x[1]+'%';
     setText('cv-'+x[0], x[1].toFixed(1));
     setText('ci-'+x[0], '= '+x[2].toFixed(2));
@@ -1296,6 +1348,56 @@ function chkCorte(el) {
   }
 }
 
+function loadPesosForCuenta() {
+  var cuenta = document.getElementById('cfg-pesos-sel').value;
+  var empty  = document.getElementById('pesos-empty-msg');
+  var panel  = document.getElementById('pesos-por-cuenta');
+  if (!cuenta) { empty.style.display='block'; panel.style.display='none'; return; }
+  empty.style.display='none'; panel.style.display='block';
+  var key = 'pesos_' + cuenta;
+  var p   = (cfg.pesosPorCuenta && cfg.pesosPorCuenta[key]) || {neg:45,rep:30,int:15,vol:10};
+  sv('cfg-p-neg', p.neg); sv('cfg-p-rep', p.rep);
+  sv('cfg-p-int', p.int); sv('cfg-p-vol', p.vol);
+  updPesosSum();
+}
+
+function updPesosSum() {
+  var total = (parseFloat(sv_get('cfg-p-neg'))||0)
+            + (parseFloat(sv_get('cfg-p-rep'))||0)
+            + (parseFloat(sv_get('cfg-p-int'))||0)
+            + (parseFloat(sv_get('cfg-p-vol'))||0);
+  var warn = document.getElementById('pesos-sum-warn');
+  var ok   = document.getElementById('pesos-sum-ok');
+  var txt  = document.getElementById('pesos-sum-txt');
+  if (Math.abs(total - 100) < 0.01) {
+    if (warn) warn.style.display = 'none';
+    if (ok)   ok.style.display   = 'block';
+  } else {
+    if (warn) warn.style.display = 'block';
+    if (ok)   ok.style.display   = 'none';
+    if (txt)  txt.textContent    = 'Los pesos suman ' + total.toFixed(0) + '% — deben sumar exactamente 100%.';
+  }
+}
+
+function guardarPesosCuenta() {
+  var cuenta = document.getElementById('cfg-pesos-sel').value;
+  if (!cuenta) { toast('Selecciona una cuenta primero','err'); return; }
+  var neg = parseFloat(sv_get('cfg-p-neg'))||0;
+  var rep = parseFloat(sv_get('cfg-p-rep'))||0;
+  var int = parseFloat(sv_get('cfg-p-int'))||0;
+  var vol = parseFloat(sv_get('cfg-p-vol'))||0;
+  var total = neg + rep + int + vol;
+  if (Math.abs(total - 100) >= 0.01) {
+    toast('Los pesos deben sumar 100% — actualmente suman ' + total.toFixed(0) + '%','err');
+    return;
+  }
+  if (!cfg.pesosPorCuenta) cfg.pesosPorCuenta = {};
+  cfg.pesosPorCuenta['pesos_'+cuenta] = {neg:neg, rep:rep, int:int, vol:vol};
+  localStorage.setItem('icp_cfg', JSON.stringify(cfg));
+  toast('Pesos guardados para ' + cuenta + ' — Neg:'+neg+'% Rep:'+rep+'% Int:'+int+'% Vol:'+vol+'%','ok');
+  logEvt('Pesos actualizados','Cuenta: '+cuenta+' · Neg:'+neg+'% Rep:'+rep+'% Int:'+int+'% Vol:'+vol+'%');
+}
+
 function limpiarDelta() {
   sv('d-tema',''); sv('d-base',''); sv('d-hora','');
   ['d-per-fi','d-per-hi','d-per-ff','d-per-hf'].forEach(function(id){ sv(id,''); });
@@ -1345,7 +1447,8 @@ function calcDelta() {
     var prev     = pts[pts.length-1];
     var negInc   = Math.round((negTotal - prev.negAcum)*100*100)/100;
     var repInc   = repTotal - prev.repAcum;
-    var res      = doCalc(negTotal, repTotal, lastR?lastR.interac:0, lastR?lastR.vol:0, tR, tI, tV);
+    var pesosDelta = getPesosForCuenta(lastR ? lastR.cuenta : '');
+    var res      = doCalc(negTotal, repTotal, lastR?lastR.interac:0, lastR?lastR.vol:0, tR, tI, tV, pesosDelta);
     var delta    = Math.round((res.icp - prev.icp)*100)/100;
     pts.push({ h:h, icp:res.icp, delta:delta, cn:i+1, negAcum:negTotal, repAcum:repTotal, negInc:negInc, repInc:repInc });
   });
